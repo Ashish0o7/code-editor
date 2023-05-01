@@ -17,42 +17,61 @@ import OutputDetails from "./OutputDetails";
 import ThemeDropdown from "./ThemeDropdown";
 import LanguagesDropdown from "./LanguagesDropdown";
 
-const javascriptDefault = `/**
-* Problem: Binary Search: Search a sorted array for a target value.
+const javascriptDefault = `/*
+ DFS Traversal
 */
+#include<bits/stdc++.h>
+using namespace std;
 
-// Time: O(log n)
-const binarySearch = (arr, target) => {
- return binarySearchHelper(arr, target, 0, arr.length - 1);
-};
+void dfs(int u, vector<int> adj[], vector<bool> &visited) {
+    visited[u] = true;
+    cout << u << " ";
+    for(int v : adj[u]) {
+        if(!visited[v]) {
+            dfs(v, adj, visited);
+        }
+    }
+}
 
-const binarySearchHelper = (arr, target, start, end) => {
- if (start > end) {
-   return false;
- }
- let mid = Math.floor((start + end) / 2);
- if (arr[mid] === target) {
-   return mid;
- }
- if (arr[mid] < target) {
-   return binarySearchHelper(arr, target, mid + 1, end);
- }
- if (arr[mid] > target) {
-   return binarySearchHelper(arr, target, start, mid - 1);
- }
-};
+int main() {
+    int n, m;
+    cout << "Enter the number of nodes and edges: ";
+    cin >> n >> m;
 
-const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-const target = 5;
-console.log(binarySearch(arr, target));
+    vector<int> adj[n+1];
+    vector<bool> visited(n+1, false);
+
+    cout << "Enter the edges: " << endl;
+    for(int i = 0; i < m; i++) {
+        int u, v;
+        cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+
+    cout << "DFS Traversal: ";
+    for(int i = 1; i <= n; i++) {
+        if(!visited[i]) {
+            dfs(i, adj, visited);
+        }
+    }
+
+    return 0;
+}
+
 `;
+const input_def=`5 4
+1 3
+2 4
+1 2
+4 3`;
 
 const Landing = () => {
   const [code, setCode] = useState(javascriptDefault);
-  const [customInput, setCustomInput] = useState("");
+  const [customInput, setCustomInput] = useState(input_def);
   const [outputDetails, setOutputDetails] = useState(null);
   const [processing, setProcessing] = useState(null);
-  const [theme, setTheme] = useState("cobalt");
+  const [theme, setTheme] = useState("Oceanic Next");
   const [language, setLanguage] = useState(languageOptions[0]);
 
   const enterPress = useKeyPress("Enter");
@@ -239,9 +258,7 @@ const Landing = () => {
         </div>
 
         <div className="right-container flex flex-shrink-0 w-[30%] flex-col">
-          <OutputWindow outputDetails={outputDetails} />
-          <div className="flex flex-col items-end">
-            <CustomInput
+        <CustomInput
               customInput={customInput}
               setCustomInput={setCustomInput}
             />
@@ -249,12 +266,15 @@ const Landing = () => {
               onClick={handleCompile}
               disabled={!code}
               className={classnames(
-                "mt-4 border-2 border-black z-10 rounded-md shadow-[5px_5px_0px_0px_rgba(0,0,0)] px-4 py-2 hover:shadow transition duration-200 bg-white flex-shrink-0",
+                "mt-4 border-2 border-black z-10 rounded-md shadow-[5px_5px_0px_0px_rgba(0,0,0)] px-4 py-2 hover:shadow transition duration-200 bg-white flex-shrink-0 bg-gradient-to-r from-green-400 to-blue-500 hover:from-pink-500 hover:to-yellow-500 ...",
                 !code ? "opacity-50" : ""
               )}
             >
               {processing ? "Processing..." : "Compile and Execute"}
             </button>
+          <div className="flex flex-col pt-4">
+               <OutputWindow outputDetails={outputDetails} />
+           
           </div>
           {outputDetails && <OutputDetails outputDetails={outputDetails} />}
         </div>
