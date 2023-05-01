@@ -13,7 +13,7 @@ function App() {
 
   return (
     <div>
-   
+   <Route>
         <Header userEmail={userEmail} />
         <Routes>
           <Route exact path="/" element={<Landing />} />
@@ -22,7 +22,7 @@ function App() {
           <Route path="/saved-codes" element={<SavedCodes savedCodes={savedCodes} />} /> // add the new route
            <Route path="/featured" element={<FeaturedCodes  />} />
         </Routes>
-
+</Route>
     </div>
   );
 }
