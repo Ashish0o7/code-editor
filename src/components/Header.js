@@ -6,6 +6,8 @@ import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 import "firebase/compat/database";
 import "firebase/compat/storage";
+import SavedCodes from './SavedCodes';
+import FeaturedCodes from './Featured';
 import { useNavigate} from "react-router-dom";
 function Header() {
   const navigate = useNavigate();
@@ -20,6 +22,7 @@ function Header() {
   };
 
   return (
+   
    <div className="fixed top-0 left-0 w-full bg-gray-900 text-white px-4 py-2 flex flex-col sm:flex-row items-center justify-between z-30">
       <div className="flex items-center">
         <Link to="/" className="flex items-center">
@@ -29,7 +32,10 @@ function Header() {
       </div>
       
       <div className="flex items-center space-x-6 sm:space-x-12 mt-2 sm:mt-0">
+        <SavedCodes/>
         <a href="/saved-codes" className="text-sm sm:text-base font-medium hover:text-gray-300 transition duration-200">Saved Codes</a>
+         <FeaturedCodes/>
+
         <a href="/featured" className="text-sm sm:text-base font-medium hover:text-gray-300 transition duration-200">Featured Codes</a>
         <a href="https://vixar-places.onrender.com/" className="text-sm sm:text-base font-medium hover:text-gray-300 transition duration-200">Vixar Places</a>
       </div>
