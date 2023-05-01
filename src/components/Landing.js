@@ -16,7 +16,7 @@ import CustomInput from "./CustomInput";
 import OutputDetails from "./OutputDetails";
 import ThemeDropdown from "./ThemeDropdown";
 import LanguagesDropdown from "./LanguagesDropdown";
-
+import { db } from "./firebase";
 const javascriptDefault = `/*
  DFS Traversal
 */
@@ -73,7 +73,7 @@ const Landing = () => {
   const [processing, setProcessing] = useState(null);
   const [theme, setTheme] = useState("Oceanic Next");
   const [language, setLanguage] = useState(languageOptions[0]);
-
+   const [title, setTitle] = useState("");
   const enterPress = useKeyPress("Enter");
   const ctrlPress = useKeyPress("Control");
 
@@ -219,7 +219,17 @@ const Landing = () => {
       progress: undefined,
     });
   };
-
+  const handleSaveCode = () => {
+    const savedCodes = JSON.parse(localStorage.getItem("savedCodes")) || [];
+  const newCode = {
+    code,
+    title: title,
+    timestamp: new Date().toLocaleString(),
+  };
+  savedCodes.push(newCode);
+  localStorage.setItem("savedCodes", JSON.stringify(savedCodes));
+  showSuccessToast("Code saved successfully!");
+  };
   return (
     <>
       <ToastContainer
@@ -239,13 +249,28 @@ const Landing = () => {
       {/* <div className="h-4 w-full bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500"></div> */}
      <Header/>
      <div></div>
-      <div className="flex flex-row pt-20">
+      <div className="flex flex-row pt-20 align-items-center">
         <div className="px-4 py-2">
           <LanguagesDropdown onSelectChange={onSelectChange} />
         </div>
         <div className="px-4 py-2">
           <ThemeDropdown handleThemeChange={handleThemeChange} theme={theme} />
         </div>
+        <div className="px-4 py-3">
+        <input
+      className="border-gray-400 border-2 rounded-md p-2 placeholder-gray-500"
+      type="text"
+      placeholder="Enter Title"
+      value={title}
+      onChange={(e) => setTitle(e.target.value)}
+    /></div>
+        <div className="px-4 py-1">
+        <button onClick={handleSaveCode} className={classnames(
+               "border-2 border-black z-10 rounded-md shadow-[5px_5px_0px_0px_rgba(0,0,0)] px-4 py-2 hover:shadow transition duration-200",
+  "mt-2 ml-4", // adjust the margin values to match the other elements
+  !code ? "opacity-50" : ""
+              )}>Save Code</button>
+      </div>
       </div>
       <div className="flex flex-row space-x-4 items-start px-4 py-4">
         <div className="flex flex-col w-full h-full justify-start items-end">

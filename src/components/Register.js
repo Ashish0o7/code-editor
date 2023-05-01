@@ -114,13 +114,13 @@ import 'firebase/compat/firestore';
 import "firebase/compat/database";
 import "firebase/compat/storage";
 const firebaseConfig = {
-  apiKey: "AIzaSyAjZL5xO-3zIfSVfgKQeYPzFE54radQraA",
-  authDomain: "code-editor-9b25e.firebaseapp.com",
-  projectId: "code-editor-9b25e",
-  storageBucket: "code-editor-9b25e.appspot.com",
-  messagingSenderId: "411595774832",
-  appId: "1:411595774832:web:fa617c4a3fa63db0534db5",
-  measurementId: "G-GTBQDQYY14"
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
 };
 
 // Initialize Firebase
@@ -128,7 +128,7 @@ const firebaseConfig = {
 
 
 const app = firebase.initializeApp(firebaseConfig);
-const Register = ({ setUserEmail }) => {
+const Register = () => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -137,8 +137,10 @@ const Register = ({ setUserEmail }) => {
     password: '',
   });
   const [error, setError] = useState('');
-
-  const { username, email, password } = formData;
+  const [email, setEmail] = useState("");
+   const [username, setUsername] = useState("");
+   const [password, setPassword] = useState("");
+  // const { username, email, password } = formData;
 
   const handleChange = (event) => {
     setFormData({
@@ -148,38 +150,33 @@ const Register = ({ setUserEmail }) => {
   };
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
+  event.preventDefault();
 
-    try {
-      const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
-      const { user } = userCredential;
+  try {
+    const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
+    // const { user } = userCredential;
 
-      // Update the user's display name
-      await user.updateProfile({
-        displayName: username,
-      });
+    // // Update the user's display name
+    // await user.updateProfile({
+    //   displayName: username,
+    // });
+const user = userCredential.user;
+    // Store the user email in local storage
+   localStorage.setItem("email", user.email);
+localStorage.setItem("password", password);
+// localStorage.setItem("displayName", user.displayName);s
 
-      // Store the user email in local storage
-      localStorage.setItem('userEmail', user.email);
-
-      // Update the header with the user's email
-      setUserEmail(user.email);
-
-      // Sign in the user
-      await firebase.auth().signInWithEmailAndPassword(email, password);
-
-
-      // Redirect to the main page
-      navigate('/login');
-    } catch (error) {
-      console.error(error);
-      if (error.code === 'auth/email-already-in-use') {
-        setError('An account with this email already exists.');
-      } else {
-        setError('An error occurred while registering. Please try again later.');
-      }
+    // Redirect to the main page
+    navigate('/');
+  } catch (error) {
+    console.error(error);
+    if (error.code === 'auth/email-already-in-use') {
+      setError('An account with this email already exists.');
+    } else {
+      setError('An error occurred while registering. Please try again later.');
     }
-  };
+  }
+};
 
 
   return (
@@ -207,8 +204,8 @@ const Register = ({ setUserEmail }) => {
               id="username"
               type="text"
               value={username}
-              onChange={handleChange}
-              required
+               onChange={(event) => {setUsername(event.target.value);handleChange(event);}}
+             
             />
           </div>
           <div className="mb-4">
@@ -224,7 +221,10 @@ const Register = ({ setUserEmail }) => {
               type="email"
               name="email"
               value={formData.email}
-              onChange={handleChange}
+              onChange={(event) => {
+              setEmail(event.target.value);
+              handleChange(event); // calling the handleChange function with the new value
+              }}
               required
             />
           </div>
@@ -241,7 +241,7 @@ const Register = ({ setUserEmail }) => {
               type="password"
               name="password"
               value={formData.password}
-              onChange={handleChange}
+               onChange={(event) => {setPassword(event.target.value);handleChange(event);}}
               required
             />
           </div>
