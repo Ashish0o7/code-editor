@@ -220,16 +220,19 @@ const Landing = () => {
     });
   };
   const handleSaveCode = () => {
-    const savedCodes = JSON.parse(localStorage.getItem("savedCodes")) || [];
+  const savedCodes = JSON.parse(localStorage.getItem("savedCodes")) || [];
+
   const newCode = {
     code,
     title: title,
     timestamp: new Date().toLocaleString(),
+    outputDetails: outputDetails, // add outputDetails property
   };
+
   savedCodes.push(newCode);
   localStorage.setItem("savedCodes", JSON.stringify(savedCodes));
   showSuccessToast("Code saved successfully!");
-  };
+};
   return (
     <>
       <ToastContainer
@@ -249,29 +252,35 @@ const Landing = () => {
       {/* <div className="h-4 w-full bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500"></div> */}
      <Header/>
      <div></div>
-      <div className="flex flex-row pt-20 align-items-center">
-        <div className="px-4 py-2">
-          <LanguagesDropdown onSelectChange={onSelectChange} />
-        </div>
-        <div className="px-4 py-2">
-          <ThemeDropdown handleThemeChange={handleThemeChange} theme={theme} />
-        </div>
-        <div className="px-4 py-3">
-        <input
-      className="border-gray-400 border-2 rounded-md p-2 placeholder-gray-500"
+  <div className="flex flex-row justify-between items-center p-4 rounded-md shadow-lg pt-20 relative z-5">
+  <div className="flex">
+    <div className="px-4 py-2">
+      <LanguagesDropdown onSelectChange={onSelectChange} />
+    </div>
+    <div className="px-4 py-2">
+      <ThemeDropdown handleThemeChange={handleThemeChange} theme={theme} />
+    </div>
+  </div>
+  <div className="px-4 py-1">
+    <input
+      className="border-gray-400 border-2 rounded-md p-2 placeholder-gray-500 shadow-md text-black bg-white mr-2 focus:outline-none focus:ring-2 focus:ring-purple-600"
       type="text"
       placeholder="Enter Title"
       value={title}
       onChange={(e) => setTitle(e.target.value)}
-    /></div>
-        <div className="px-4 py-1">
-        <button onClick={handleSaveCode} className={classnames(
-               "border-2 border-black z-10 rounded-md shadow-[5px_5px_0px_0px_rgba(0,0,0)] px-4 py-2 hover:shadow transition duration-200",
-  "mt-2 ml-4", // adjust the margin values to match the other elements
-  !code ? "opacity-50" : ""
-              )}>Save Code</button>
-      </div>
-      </div>
+    />
+    <button onClick={handleSaveCode} className={classnames(
+        "text-white bg-purple-600 border-2 border-purple-600 z-10 rounded-md shadow-md px-4 py-2 hover:bg-purple-700 transition duration-200",
+        "mt-2 ml-4", // adjust the margin values to match the other elements
+        !code ? "opacity-50 cursor-not-allowed" : ""
+      )}
+      disabled={!code}
+    >
+      Save Code
+    </button>
+  </div>
+</div>
+
       <div className="flex flex-row space-x-4 items-start px-4 py-4">
         <div className="flex flex-col w-full h-full justify-start items-end">
           <CodeEditorWindow
@@ -287,16 +296,58 @@ const Landing = () => {
               customInput={customInput}
               setCustomInput={setCustomInput}
             />
-            <button
-              onClick={handleCompile}
-              disabled={!code}
-              className={classnames(
-                "mt-4 border-2 border-black z-10 rounded-md shadow-[5px_5px_0px_0px_rgba(0,0,0)] px-4 py-2 hover:shadow transition duration-200 bg-white flex-shrink-0 bg-gradient-to-r from-green-400 to-blue-500 hover:from-pink-500 hover:to-yellow-500 ...",
-                !code ? "opacity-50" : ""
-              )}
-            >
-              {processing ? "Processing..." : "Compile and Execute"}
-            </button>
+         <button
+  onClick={handleCompile}
+  disabled={!code}
+  className={classnames(
+   "mt-4 px-4 py-2 text-white rounded-md shadow-md hover:shadow-lg transition duration-200 bg-blue-500 hover:bg-blue-600",
+    !code ? "opacity-50 cursor-not-allowed" : "", processing ? "bg-green-500" : "bg-blue-800"
+
+  )}
+>
+  {processing ? (
+    <svg
+      className="w-6 h-6 mr-2 animate-spin"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <circle
+        className="opacity-25"
+        cx="12"
+        cy="12"
+        r="10"
+        stroke="currentColor"
+        strokeWidth="4"
+      ></circle>
+      <path
+        className="opacity-75"
+        fill="currentColor"
+        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647zm10-5.291a7.962 7.962 0 01-2 5.291l3 2.647A8.01 8.01 0 0120 12h-4z"
+      ></path>
+    </svg>
+  ) : (
+    <div className="flex items-center">
+      <span className="mr-1">Compile</span>
+      <svg
+        className="w-6 h-6"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M5 13l4 4L19 7"
+        />
+      </svg>
+    </div>
+  )}
+</button>
+
+
           <div className="flex flex-col pt-4">
                <OutputWindow outputDetails={outputDetails} />
            

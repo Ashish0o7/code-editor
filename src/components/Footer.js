@@ -6,23 +6,11 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between">
           <p className="text-sm font-medium">
-            Created by Ashish © 2023
+            Created by Ashish
           </p>
           <div className="flex items-center space-x-4">
             <a
-              href="#"
-              className="text-gray-300 hover:text-white transition duration-150 ease-in-out"
-            >
-              Project 1
-            </a>
-            <a
-              href="#"
-              className="text-gray-300 hover:text-white transition duration-150 ease-in-out"
-            >
-              Project 2
-            </a>
-            <a
-              href="https://github.com/<your-username>"
+              href="https://github.com/Ashish0o7"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-300 hover:text-white transition duration-150 ease-in-out"

@@ -1,54 +1,43 @@
 export const customStyles = {
-  control: (styles) => ({
-    ...styles,
+  control: (provided, state) => ({
+    ...provided,
     width: "100%",
     maxWidth: "14rem",
     minWidth: "12rem",
     borderRadius: "5px",
-    color: "#000",
+    backgroundColor: state.isFocused ? "#f5f5f5" : "#f9f9f9",
+    borderColor: state.isFocused ? "#6c63ff" : "#dcdcdc",
+    boxShadow: state.isFocused ? "0 0 0 2px #6c63ff" : null,
+    transition: "all 0.3s ease",
+    cursor: "pointer",
     fontSize: "0.8rem",
     lineHeight: "1.75rem",
-    backgroundColor: "#FFFFFF",
+    color: "#333",
+  }),
+  option: (provided, state) => ({
+    ...provided,
+    backgroundColor: state.isSelected ? "#6c63ff" : state.isFocused ? "#f5f5f5" : "#fff",
+    color: state.isSelected ? "#fff" : "#333",
+    fontSize: "0.8rem",
+    lineHeight: "1.75rem",
     cursor: "pointer",
-    border: "2px solid #000000",
-    boxShadow: "5px 5px 0px 0px rgba(0,0,0);",
-    ":hover": {
-      border: "2px solid #000000",
-      boxShadow: "none",
+    transition: "all 0.3s ease",
+    ":active": {
+      backgroundColor: "#6c63ff",
+      color: "#fff",
     },
   }),
-  option: (styles) => {
-    return {
-      ...styles,
-      color: "#000",
-      fontSize: "0.8rem",
-      lineHeight: "1.75rem",
-      width: "100%",
-      background: "#fff",
-      ":hover": {
-        backgroundColor: "rgb(243 244 246)",
-        color: "#000",
-        cursor: "pointer",
-      },
-    };
-  },
-  menu: (styles) => {
-    return {
-      ...styles,
-      backgroundColor: "#fff",
-      maxWidth: "14rem",
-      border: "2px solid #000000",
-      borderRadius: "5px",
-      boxShadow: "5px 5px 0px 0px rgba(0,0,0);",
-    };
-  },
-
-  placeholder: (defaultStyles) => {
-    return {
-      ...defaultStyles,
-      color: "#000",
-      fontSize: "0.8rem",
-      lineHeight: "1.75rem",
-    };
-  },
+  menu: (provided) => ({
+    ...provided,
+    backgroundColor: "#fff",
+    borderRadius: "5px",
+    border: "1px solid #dcdcdc",
+    boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
+  }),
+  placeholder: (provided) => ({
+    ...provided,
+    color: "#999",
+    fontSize: "0.8rem",
+    lineHeight: "1.75rem",
+  }),
 };

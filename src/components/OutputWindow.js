@@ -36,7 +36,7 @@ const OutputWindow = ({ outputDetails }) => {
   return (
     <div className="bg-gray-800 rounded-md p-4">
       <h1 className="font-bold text-lg text-white mb-2">Output</h1>
-      <div className="w-full h-48 bg-yellow-900 rounded-md text-white font-normal text-sm overflow-y-auto">
+      <div className="w-full h-48 bg-gray-600 rounded-md text-white font-normal text-sm overflow-y-auto">
         {outputDetails ? <>{getOutput()}</> : null}
       </div>
     </div>
