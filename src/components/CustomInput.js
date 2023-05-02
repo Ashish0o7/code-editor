@@ -3,18 +3,19 @@ import { classnames } from "../utils/general";
 
 const CustomInput = ({ customInput, setCustomInput }) => {
   return (
-    <>
-      {" "}
+    <div className="w-full max-w-md">
+      <label className="block text-gray-700 font-bold mb-2">Custom Input</label>
       <textarea
         rows="5"
         value={customInput}
         onChange={(e) => setCustomInput(e.target.value)}
-        placeholder={`Custom input`}
+        placeholder={`Enter your custom input here...`}
         className={classnames(
-          "focus:outline-none w-full border-2 border-black z-10 rounded-md shadow-[5px_5px_0px_4px_rgba(0,0,0)] px-4 py-2 hover:shadow transition duration-200 bg-white mt-2"
+          "w-full border border-gray-400 p-2 rounded-md shadow-md transition duration-200",
+          "focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         )}
       ></textarea>
-    </>
+    </div>
   );
 };
 
