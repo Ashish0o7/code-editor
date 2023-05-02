@@ -15,10 +15,12 @@ const CodeEditorWindow = ({ onChange, language, code, theme }) => {
   
 
   return (
-    
+     
     <div className="overlay rounded-md overflow-hidden w-full h-full shadow-4xl">
+      <div className="flex items-center justify-between px-4 py-2 bg-gray-700 border-b border-gray-600">
+      <h1 className="text-xl font-bold text-white">Code Editor</h1>
       
-       
+    </div>
       <Editor
         height="74vh"
         width={`100%`}
