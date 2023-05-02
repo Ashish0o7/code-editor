@@ -12,9 +12,10 @@ This is a code editor built with React.js that allows users to write, edit, and 
 ## Technologies Used
 
 - React.js
-- Node.js
+- Firebase
+- Axios
 - Express.js
-- MongoDB
+
 
 ## Getting Started
 
