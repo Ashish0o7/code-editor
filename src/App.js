@@ -20,7 +20,7 @@ function App() {
           <Route path="/login" element={<Login setUserEmail={setUserEmail} />} />
           <Route path="/register" element={<Register setUserEmail={setUserEmail}/>} />
           <Route path="https://code-editor-6rqa.onrender.com/saved-codes" element={<SavedCodes/>} />
-          <Route path="https://code-editor-6rqa.onrender.com/saved-codes" element={<FeaturedCodes  />} />
+          <Route path="https://code-editor-6rqa.onrender.com/featured" element={<FeaturedCodes  />} />
         </Routes>
    
     </div>
