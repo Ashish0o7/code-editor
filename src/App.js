@@ -10,8 +10,7 @@ import FeaturedCodes from "./components/Featured";
 
 function App() {
   const [userEmail, setUserEmail] = useState('');
-  const [savedCodes, setSavedCodes] = useState([]);
-
+  
   return (
     <div>
      
@@ -20,8 +19,8 @@ function App() {
           <Route exact path="/" element={<Landing />} />
           <Route path="/login" element={<Login setUserEmail={setUserEmail} />} />
           <Route path="/register" element={<Register setUserEmail={setUserEmail}/>} />
-          <Route path="/saved-codes" element={<SavedCodes savedCodes={savedCodes} />} />
-          <Route path="/featured" element={<FeaturedCodes  />} />
+          <Route path="https://code-editor-6rqa.onrender.com/saved-codes" element={<SavedCodes/>} />
+          <Route path="https://code-editor-6rqa.onrender.com/saved-codes" element={<FeaturedCodes  />} />
         </Routes>
    
     </div>
