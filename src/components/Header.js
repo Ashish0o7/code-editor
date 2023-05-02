@@ -33,10 +33,10 @@ function Header() {
       
       <div className="flex items-center space-x-6 sm:space-x-12 mt-2 sm:mt-0">
         {/* <SavedCodes/> */}
-        <a href="/saved-codes" className="text-sm sm:text-base font-medium hover:text-gray-300 transition duration-200">Saved Codes</a>
+        <Link to="/saved-codes" className="text-sm sm:text-base font-medium hover:text-gray-300 transition duration-200">Saved Codes</a>
          {/* <FeaturedCodes/> */}
 
-        <a href="/featured" className="text-sm sm:text-base font-medium hover:text-gray-300 transition duration-200">Featured Codes</a>
+        <Link to="/featured" className="text-sm sm:text-base font-medium hover:text-gray-300 transition duration-200">Featured Codes</a>
         <a href="https://vixar-places.onrender.com/" className="text-sm sm:text-base font-medium hover:text-gray-300 transition duration-200">Vixar Places</a>
       </div>
 
