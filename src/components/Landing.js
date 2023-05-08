@@ -3,7 +3,8 @@ import CodeEditorWindow from "./CodeEditorWindow";
 import axios from "axios";
 import { classnames } from "../utils/general";
 import { languageOptions } from "../constants/languageOptions";
-
+import { FaSpinner } from 'react-icons/fa';
+import { MdCode } from 'react-icons/md';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -296,7 +297,7 @@ const Landing = () => {
               customInput={customInput}
               setCustomInput={setCustomInput}
             />
-         <button
+        <button
   onClick={handleCompile}
   disabled={!code}
   className={classnames(
@@ -307,44 +308,12 @@ const Landing = () => {
 >
   {processing ? (
     <div className="flex items-center justify-center space-x-2">
-      <svg
-        className="w-6 h-6 animate-spin"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-      >
-        <circle
-          className="opacity-25"
-          cx="12"
-          cy="12"
-          r="10"
-          stroke="currentColor"
-          strokeWidth="4"
-        ></circle>
-        <path
-          className="opacity-75"
-          fill="currentColor"
-          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647zm10-5.291a7.962 7.962 0 01-2 5.291l3 2.647A8.01 8.01 0 0120 12h-4z"
-        ></path>
-      </svg>
+      <FaSpinner className="w-6 h-6 animate-spin" />
       <span>Compiling...</span>
     </div>
   ) : (
     <div className="flex items-center justify-center space-x-2">
-      <svg
-        className="w-6 h-6"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M5 13l4 4L19 7"
-        />
-      </svg>
+      <MdCode className="w-6 h-6" />
       <span>Compile Code</span>
     </div>
   )}
