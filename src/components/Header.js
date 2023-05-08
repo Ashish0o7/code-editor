@@ -18,7 +18,7 @@ function Header() {
     }).catch((error) => {
       console.error(error);
     });
-    navigate('/login');
+    
   };
 
   return (
