@@ -26,7 +26,8 @@ function Header() {
    <div className="fixed top-0 left-0 w-full bg-gray-900 text-white px-4 py-2 flex flex-col sm:flex-row items-center justify-between z-30">
       <div className="flex items-center">
         <Link to="/" className="flex items-center">
-          <img className="h-8 w-auto sm:h-10" src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg" alt="Logo" />
+          <img className="h-8 w-auto sm:h-10" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Atom_editor_logo.svg/1024px-Atom_editor_logo.svg.png" alt="Atom Logo" />
+          {/* <img className="h-8 w-auto sm:h-10" src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg" alt="Logo" /> */}
           <span className="ml-2 text-white font-bold text-lg sm:text-xl">Code Editor</span>
         </Link>
       </div>
