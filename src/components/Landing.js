@@ -293,19 +293,16 @@ const Landing = () => {
         </div>
 
         <div className="right-container flex flex-shrink-0 w-[30%] flex-col">
-        <CustomInput
-              customInput={customInput}
-              setCustomInput={setCustomInput}
-            />
         <button
   onClick={handleCompile}
   disabled={!code}
   className={classnames(
-    "mt-4 px-6 py-3 text-white rounded-md shadow-md hover:shadow-lg transition duration-200 bg-gradient-to-r from-green-500 to-green-700",
+    "mt-4 mb-4 px-6 py-3 text-white rounded-md shadow-md hover:shadow-lg transition duration-200 bg-gradient-to-r from-green-500 to-green-700",
     !code ? "opacity-50 cursor-not-allowed" : "",
     processing ? "bg-green-500" : ""
   )}
 >
+
   {processing ? (
     <div className="flex items-center justify-center space-x-2">
       <FaSpinner className="w-6 h-6 animate-spin" />
@@ -320,6 +317,11 @@ const Landing = () => {
 </button>
 
 
+        <CustomInput
+              customInput={customInput}
+              setCustomInput={setCustomInput}
+            />
+      
 
           <div className="flex flex-col pt-4">
                <OutputWindow outputDetails={outputDetails} />
