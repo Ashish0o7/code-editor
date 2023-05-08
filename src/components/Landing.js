@@ -300,35 +300,37 @@ const Landing = () => {
   onClick={handleCompile}
   disabled={!code}
   className={classnames(
-   "mt-4 px-4 py-2 text-white rounded-md shadow-md hover:shadow-lg transition duration-200 bg-blue-500 hover:bg-blue-600",
-    !code ? "opacity-50 cursor-not-allowed" : "", processing ? "bg-green-500" : "bg-blue-800"
-
+    "mt-4 px-6 py-3 text-white rounded-md shadow-md hover:shadow-lg transition duration-200 bg-gradient-to-r from-green-500 to-green-700",
+    !code ? "opacity-50 cursor-not-allowed" : "",
+    processing ? "bg-green-500" : ""
   )}
 >
   {processing ? (
-    <svg
-      className="w-6 h-6 mr-2 animate-spin"
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-    >
-      <circle
-        className="opacity-25"
-        cx="12"
-        cy="12"
-        r="10"
-        stroke="currentColor"
-        strokeWidth="4"
-      ></circle>
-      <path
-        className="opacity-75"
-        fill="currentColor"
-        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647zm10-5.291a7.962 7.962 0 01-2 5.291l3 2.647A8.01 8.01 0 0120 12h-4z"
-      ></path>
-    </svg>
+    <div className="flex items-center justify-center space-x-2">
+      <svg
+        className="w-6 h-6 animate-spin"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <circle
+          className="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          strokeWidth="4"
+        ></circle>
+        <path
+          className="opacity-75"
+          fill="currentColor"
+          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647zm10-5.291a7.962 7.962 0 01-2 5.291l3 2.647A8.01 8.01 0 0120 12h-4z"
+        ></path>
+      </svg>
+      <span>Compiling...</span>
+    </div>
   ) : (
-    <div className="flex items-center">
-      <span className="mr-1">Compile</span>
+    <div className="flex items-center justify-center space-x-2">
       <svg
         className="w-6 h-6"
         xmlns="http://www.w3.org/2000/svg"
@@ -343,9 +345,11 @@ const Landing = () => {
           d="M5 13l4 4L19 7"
         />
       </svg>
+      <span>Compile Code</span>
     </div>
   )}
 </button>
+
 
 
           <div className="flex flex-col pt-4">
