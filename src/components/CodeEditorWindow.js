@@ -13,18 +13,7 @@ const CodeEditorWindow = ({ onChange, language, code, theme }) => {
     onChange("code", value);
     updateDiagnostics(value);
   };
-  const handleCollab= () => {
-    navigator.clipboard.writeText(value);
-    toast.info("Will add this feature soon :) !", {
-      position: "top-right",
-      autoClose: 4000,
-      hideProgressBar: true,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-  };
+ 
   const handleCopyToClipboard = () => {
     navigator.clipboard.writeText(value);
     toast.success("Code copied to clipboard!", {
@@ -37,11 +26,7 @@ const CodeEditorWindow = ({ onChange, language, code, theme }) => {
       progress: undefined,
     });
   };
-   const handleCollaborate = () => {
-    const encodedValue = encodeURIComponent(value);
-    const url = `https://your-collaboration-service.com?code=${encodedValue}`;
-    window.open(url, "_blank");
-  };
+ 
  const updateDiagnostics = (value) => {
   if (model) {
     monaco.editor.setModelMarkers(model, "owner", []);
