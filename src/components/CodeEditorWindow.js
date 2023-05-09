@@ -88,8 +88,7 @@ const CodeEditorWindow = ({ onChange, language, code, theme }) => {
         >
           Copy
         </button>
-        <button className="px-4 py-2 text-white bg-blue-500 rounded-md shadow-md hover:shadow-lg transition duration-200"
-        onClick={handleCollab}>Collaborate</button>
+       
       </div>
       <Editor
         height="68vh"

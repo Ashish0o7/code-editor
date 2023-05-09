@@ -35,6 +35,7 @@ function Header() {
       <div className="flex items-center space-x-6 sm:space-x-12 mt-2 sm:mt-0">
         {/* <SavedCodes/> */}
         <Link to="/saved-codes" className="text-sm sm:text-base font-medium hover:text-gray-300 transition duration-200">Saved Codes</Link>
+        <Link to="/collab" className="text-sm sm:text-base font-medium hover:text-gray-300 transition duration-200">Collaborate </Link>
          {/* <FeaturedCodes/> */}
 
         <Link to="/featured" className="text-sm sm:text-base font-medium hover:text-gray-300 transition duration-200">Featured Codes</Link>

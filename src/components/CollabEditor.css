@@ -1,0 +1,89 @@
+.collab-editor {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.room-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.room-form input {
+    width: 100%;
+    max-width: 300px;
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.room-form button {
+    background-color: #3f51b5;
+    color: white;
+    padding: 10px;
+    margin: 5px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.room-form button:hover {
+    background-color: #2c3e50;
+}
+
+.disconnected-message {
+    color: red;
+}
+
+.editor-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 800px;
+    margin-top: 20px;
+}
+
+.code-editor {
+    flex: 1;
+    margin-right: 20px;
+}
+
+.chat-box {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 400px;
+}
+
+.chat-box .users {
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.chat-box .messages {
+    flex: 1;
+    overflow-y: scroll;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.chat-box input[type="text"] {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}

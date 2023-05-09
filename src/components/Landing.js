@@ -7,7 +7,7 @@ import { FaSpinner } from 'react-icons/fa';
 import { MdCode } from 'react-icons/md';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { Link } from 'react-router-dom';
 import { defineTheme } from "../lib/defineTheme";
 import useKeyPress from "../hooks/useKeyPress";
 import Footer from "./Footer";
@@ -220,6 +220,7 @@ const Landing = () => {
       progress: undefined,
     });
   };
+  
   const handleSaveCode = () => {
   const savedCodes = JSON.parse(localStorage.getItem("savedCodes")) || [];
 
@@ -262,6 +263,13 @@ const Landing = () => {
       <ThemeDropdown handleThemeChange={handleThemeChange} theme={theme} />
     </div>
   </div>
+  {/* <div className="px-4 py-2">
+  <Link
+        to="/collab"
+        className="px-4 py-2 text-white bg-blue-500 rounded-md shadow-md hover:shadow-lg transition duration-200"
+      >
+        Collaborate
+      </Link></div> */}
   <div className="px-4 py-1">
     <input
       className="border-gray-400 border-2 rounded-md p-2 placeholder-gray-500 shadow-md text-black bg-white mr-2 focus:outline-none focus:ring-2 focus:ring-purple-600"
