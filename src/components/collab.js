@@ -69,6 +69,7 @@ const CollabEditor = () => {
       <div key={index} className="chat-message">
         <span className="chat-username">{message.username}: </span>
         <span className="chat-text">{message.text}</span>
+  <p> Will integrate ChatGPT 3.5 here pretty soon I guess :) </p>
       </div>
     ));
   };
@@ -116,7 +117,7 @@ const CollabEditor = () => {
         </button>
       </div>
     </div>
-    {isConnected ? (
+    
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="bg-white rounded-lg shadow-lg p-4">
           <div className="h-full">
@@ -172,10 +173,8 @@ const CollabEditor = () => {
           </div>
         </div>
       </div>
-    ) : (
-      <div className="flex justify-center items-center h-full">
-        <p className="text-2xl font-bold text-gray-800">Connecting...</p>
-      </div>
+    
+      
     )}
   </div>
 </div>
