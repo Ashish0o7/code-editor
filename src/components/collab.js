@@ -69,7 +69,7 @@ const CollabEditor = () => {
       <div key={index} className="chat-message">
         <span className="chat-username">{message.username}: </span>
         <span className="chat-text">{message.text}</span>
-  <p> Will integrate ChatGPT 3.5 here pretty soon I guess :) </p>
+
       </div>
     ));
   };
@@ -154,6 +154,7 @@ const CollabEditor = () => {
                 <h2 className="text-lg font-bold text-gray-800">Chat</h2>
               </div>
               <div className="flex-grow overflow-auto">
+                   <p> Will integrate ChatGPT 3.5 here pretty soon I guess :) </p>
                 {renderChatMessages()}
               </div>
               <div className="flex-shrink-0 mt-4">
