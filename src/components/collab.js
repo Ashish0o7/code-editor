@@ -258,19 +258,7 @@ function getChatGPTResponse(message) {
         </button>
 
       </form>
-              <div className="flex-shrink-0 mt-4">
-                <input
-                  type="text"
-                  placeholder="Enter message"
-                  className="px-3 py-2 rounded-lg border-2 border-gray-200 w-full focus:outline-none focus:border-blue-500"
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      handleSendMessage(e.target.value);
-                      e.target.value = '';
-                    }
-                  }}
-               />
-                  </div>
+              
             </div>
           </div>
         </div>
