@@ -265,7 +265,7 @@ function getChatGPTResponse(message) {
       </div>
     
       
-    )}
+    
   </div>
 </div>
 
