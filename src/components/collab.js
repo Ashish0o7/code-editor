@@ -5,7 +5,7 @@ import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/material.css';
 import 'codemirror/mode/javascript/javascript';
 import './CollabEditor.css';
-
+import axios from "axios";
 const CollabEditor = () => {
   const [roomId, setRoomId] = useState('');
   const [code, setCode] = useState('');
@@ -87,8 +87,82 @@ const CollabEditor = () => {
   );
 }
 
+function handleSubmit(event) {
 
+    event.preventDefault();
 
+    const messageInput = event.target.elements.messageInput;
+
+    const message = messageInput.value.trim();
+
+    if (message) {
+
+      setMessages((prevMessages) => [
+
+        ...prevMessages,
+
+        { text: message, sender: "user" },
+
+      ]);
+
+      getChatGPTResponse(message);
+
+      messageInput.value = "";
+
+    }
+
+  }
+function getChatGPTResponse(message) {
+
+    const apiKey = "your_api_key_here";
+
+    const url = "https://api.openai.com/v1/engines/davinci-codex/completions";
+
+    const data = {
+
+      prompt: message,
+
+      max_tokens: 64,
+
+      temperature: 0.7,
+
+      n: 1,
+
+      stop: "\n",
+
+    };
+
+    axios
+
+      .post(url, data, {
+
+        headers: {
+
+          "Content-Type": "application/json",
+
+          Authorization: `Bearer ${apiKey}`,
+
+        },
+
+      })
+
+      .then((response) => {
+
+        const chatGPTResponse = response.data.choices[0].text.trim();
+
+        setMessages((prevMessages) => [
+
+          ...prevMessages,
+
+          { text: chatGPTResponse, sender: "chatbot" },
+
+        ]);
+
+      })
+
+      .catch((error) => console.error(error));
+
+  }
 
   return (
   <div className="bg-gray-100 min-h-screen">
@@ -157,6 +231,33 @@ const CollabEditor = () => {
                    <p> Will integrate ChatGPT 3.5 here pretty soon I guess :) </p>
                 {renderChatMessages()}
               </div>
+<form onSubmit={handleSubmit} className="flex p-4">
+
+        <input
+
+          type="text"
+
+          name="messageInput"
+
+          className="flex-grow border border-gray-400 rounded-l-lg py-2 px-3"
+
+          placeholder="Type your message here..."
+
+        />
+
+        <button
+
+          type="submit"
+
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-r-lg py-2 px-4"
+
+        >
+
+          Send
+
+        </button>
+
+      </form>
               <div className="flex-shrink-0 mt-4">
                 <input
                   type="text"
