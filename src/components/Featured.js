@@ -20,15 +20,17 @@ const FeaturedCodes = () => {
   }, []);
 
   const fetchData = async () => {
-    try {
-      const response = await axios.get(
-        "https://featured-code-server.onrender.com/api/codes"
-      );
-      setCodes(response.data);
-    } catch (error) {
-      console.error("Error fetching featured codes:", error);
-    }
-  };
+  try {
+    const response = await axios.get(
+      "https://featured-code-server.onrender.com/api/codes"
+    );
+    const sortedCodes = response.data.sort((a, b) => b.averageRating - a.averageRating);
+    setCodes(sortedCodes);
+  } catch (error) {
+    console.error("Error fetching featured codes:", error);
+  }
+};
+
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -100,7 +102,7 @@ const FeaturedCodes = () => {
                   />
                   <button
                     className="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                    onClick={() => submitRating(code.id)}
+                    onClick={() => submitRating(code._id)}
                   >
                     Submit Rating
                   </button>
