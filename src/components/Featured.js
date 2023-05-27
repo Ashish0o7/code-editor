@@ -115,7 +115,7 @@ const FeaturedCodes = () => {
       <div className="bg-gray-100 p-4 rounded-md text-sm text-gray-800 mt-8">
         <p className="font-bold mb-2">Note:</p>
         <p>
-          Hi, Ashish here. This page is a work in progress. I will make this page real-time using a MongoDB server and provide a rating option for featured posts. Anyone will be able to post their particular code or post. Stay tuned for updates!
+         All codes are stored, and can be rated by others, and top rated posts will come on top
         </p>
       </div>
 
