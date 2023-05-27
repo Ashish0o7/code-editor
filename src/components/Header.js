@@ -1,5 +1,5 @@
 import { FaUser } from 'react-icons/fa';
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
@@ -8,9 +8,11 @@ import "firebase/compat/database";
 import "firebase/compat/storage";
 import SavedCodes from './SavedCodes';
 import FeaturedCodes from './Featured';
-import { useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 function Header() {
   const navigate = useNavigate();
+
   const handleLogout = () => {
     firebase.auth().signOut().then(() => {
       localStorage.removeItem("email");
@@ -18,26 +20,20 @@ function Header() {
     }).catch((error) => {
       console.error(error);
     });
-    
   };
 
   return (
-   
-   <div className="fixed top-0 left-0 w-full bg-gray-900 text-white px-4 py-2 flex flex-col sm:flex-row items-center justify-between z-30">
+   <div className="fixed top-0 left-0 w-full bg-gradient-to-r from-black to-indigo-900 text-white px-4 py-2 flex flex-col sm:flex-row items-center justify-between z-30">
       <div className="flex items-center">
         <Link to="/" className="flex items-center">
           <img className="h-8 w-auto sm:h-10" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Atom_editor_logo.svg/1024px-Atom_editor_logo.svg.png" alt="Atom Logo" />
-          {/* <img className="h-8 w-auto sm:h-10" src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg" alt="Logo" /> */}
           <span className="ml-2 text-white font-bold text-lg sm:text-xl">Code Editor</span>
         </Link>
       </div>
-      
-      <div className="flex items-center space-x-6 sm:space-x-12 mt-2 sm:mt-0">
-        {/* <SavedCodes/> */}
-        <Link to="/saved-codes" className="text-sm sm:text-base font-medium hover:text-gray-300 transition duration-200">Saved Codes</Link>
-        <Link to="/collab" className="text-sm sm:text-base font-medium hover:text-gray-300 transition duration-200">Collaborate </Link>
-         {/* <FeaturedCodes/> */}
 
+      <div className="flex items-center space-x-6 sm:space-x-12 mt-2 sm:mt-0">
+        <Link to="/saved-codes" className="text-sm sm:text-base font-medium hover:text-gray-300 transition duration-200">Saved Codes</Link>
+        <Link to="/collab" className="text-sm sm:text-base font-medium hover:text-gray-300 transition duration-200">Collaborate</Link>
         <Link to="/featured" className="text-sm sm:text-base font-medium hover:text-gray-300 transition duration-200">Featured Codes</Link>
         <a href="https://vixar-places.onrender.com/" className="text-sm sm:text-base font-medium hover:text-gray-300 transition duration-200">Vixar Places</a>
       </div>
@@ -65,6 +61,5 @@ function Header() {
     </div>
   );
 }
-
 
 export default Header;

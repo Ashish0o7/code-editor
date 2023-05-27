@@ -138,7 +138,7 @@ const Landing = () => {
           console.log("too many requests", status);
 
           showErrorToast(
-            `Quota of 100 requests exceeded for the Day! Please read the blog on freeCodeCamp to learn how to setup your own RAPID API Judge0!`,
+            `Quota of 100 requests exceeded for the Day! !`,
             10000
           );
         }
