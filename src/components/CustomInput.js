@@ -3,7 +3,7 @@ import { classnames } from "../utils/general";
 
 const CustomInput = ({ customInput, setCustomInput }) => {
   return (
-    <div className="bg-gradient-to-r from-purple-700 to-indigo-900 rounded-md p-4">
+    <div className="bg-gradient-to-r from-black to-indigo-900 rounded-md p-4">
       <label className="block text-white font-bold mb-2">Custom Input</label>
       <textarea
         rows="5"

@@ -1,21 +1,29 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import Rating from "react-rating";
+import Rating from "./Rating";
 import MonacoEditor from "@monaco-editor/react";
 import CodeEditorWindow from "./CodeEditorWindow";
 
 const FeaturedCodes = () => {
   const [codes, setCodes] = useState([]);
   const [newCode, setNewCode] = useState({ title: "", code: "" });
+  const [loggedInUserEmail, setLoggedInUserEmail] = useState("");
+  const [userRating, setUserRating] = useState(0);
   const formRef = useRef(null);
 
   useEffect(() => {
     fetchData();
+    const userEmail = localStorage.getItem("email");
+    if (userEmail) {
+      setLoggedInUserEmail(userEmail);
+    }
   }, []);
 
   const fetchData = async () => {
     try {
-      const response = await axios.get("https://featured-code-server.onrender.com/api/codes");
+      const response = await axios.get(
+        "https://featured-code-server.onrender.com/api/codes"
+      );
       setCodes(response.data);
     } catch (error) {
       console.error("Error fetching featured codes:", error);
@@ -40,10 +48,34 @@ const FeaturedCodes = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    await axios.post("https://featured-code-server.onrender.com/api/codes", newCode);
+    await axios.post(
+      "https://featured-code-server.onrender.com/api/codes",
+      newCode
+    );
     setNewCode({ title: "", code: "" });
 
     fetchData(); // Fetch the updated list of codes after submission
+  };
+
+  const handleRatingChange = (value) => {
+    setUserRating(value);
+  };
+
+  const submitRating = async (codeId) => {
+    try {
+      await axios.post(
+        `https://featured-code-server.onrender.com/api/rating/${codeId}`,
+        {
+          email: loggedInUserEmail,
+          rating: userRating,
+        }
+      );
+
+      setUserRating(0);
+      fetchData(); // Refresh the codes after rating submission
+    } catch (error) {
+      console.error("Error submitting rating:", error);
+    }
   };
 
   return (
@@ -54,16 +86,26 @@ const FeaturedCodes = () => {
           <div key={code.id} className="bg-white shadow-lg rounded-lg overflow-hidden">
             <div className="p-4">
               <h2 className="text-xl font-bold text-gray-800 mb-2">{code.title}</h2>
+              {loggedInUserEmail && <p>Submitted by: {loggedInUserEmail}</p>}
               <div className="h-40 overflow-y-auto bg-gray-100 p-2 rounded-md">
                 <pre className="text-sm text-gray-800">{code.code}</pre>
               </div>
               <div className="mt-2">
-                <Rating
-                  emptySymbol={<i className="far fa-star text-gray-400"></i>}
-                  fullSymbol={<i className="fas fa-star text-yellow-500"></i>}
-                  initialRating={code.rating}
-                  readonly
-                />
+                <div className="flex items-center">
+                  <Rating
+                    emptySymbol={<i className="far fa-star text-gray-400"></i>}
+                    fullSymbol={<i className="fas fa-star text-yellow-500"></i>}
+                    initialRating={code.averageRating}
+                    onChange={handleRatingChange}
+                  />
+                  <button
+                    className="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    onClick={() => submitRating(code.id)}
+                  >
+                    Submit Rating
+                  </button>
+                </div>
+                <p className="text-gray-700 mt-1">Average Rating: {code.averageRating}</p>
               </div>
             </div>
           </div>
