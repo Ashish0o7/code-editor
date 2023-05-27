@@ -14,9 +14,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { Link } from 'react-router-dom';
 import MonacoEditor from "@monaco-editor/react";
 import useKeyPress from "../hooks/useKeyPress";
-import { faStar } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
+
 
 import ThemeDropdown from "./ThemeDropdown";
 
@@ -142,8 +140,7 @@ const handleSaveCode = () => {
         }
         setProcessing(false);
         console.log("catch block...", error);
-      }
-      );
+      });
   };
 
   const checkStatus = async (token) => {
@@ -260,14 +257,13 @@ const handleSaveCode = () => {
   }
 
   function renderUsers() {
-  return users.map((user) => (
-    <div key={user} className="flex items-center my-1">
-      <FontAwesomeIcon icon={faUser} className="text-green-500 mr-2" />
-      <span>{user}</span>
-    </div>
-  ));
-}
-
+    return users.map((user) => (
+      <div key={user} className="flex items-center my-1">
+        <div className="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
+        <span>{user}</span>
+      </div>
+    ));
+  }
   
 function handleThemeChange(th) {
     const theme = th;
