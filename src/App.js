@@ -17,7 +17,7 @@ function App() {
       
      
         <Header userEmail={userEmail} />
-        <Router>
+
         <Routes>
           <Route exact path="/" element={<Landing />} />
           <Route path="/login" element={<Login setUserEmail={setUserEmail} />} />
@@ -26,7 +26,7 @@ function App() {
           <Route path="/saved-codes" element={<SavedCodes/>} />
           <Route path="/featured" element={<FeaturedCodes  />} />
         </Routes>
-    </Router>
+
     </div>
   );
 }
