@@ -69,6 +69,9 @@ const input_def=`5 4
 
 const Landing = () => {
   const [code, setCode] = useState(javascriptDefault);
+  const [questions, setQuestions] = useState([]);
+  const [selectedQuestion, setSelectedQuestion] = useState(null);
+  const [questionDetails, setQuestionDetails] = useState(null);
   const [customInput, setCustomInput] = useState(input_def);
   const [outputDetails, setOutputDetails] = useState(null);
   const [processing, setProcessing] = useState(null);
@@ -77,7 +80,30 @@ const Landing = () => {
    const [title, setTitle] = useState("");
   const enterPress = useKeyPress("Enter");
   const ctrlPress = useKeyPress("Control");
+  useEffect(() => {
+    // Fetch questions when the component mounts
+    fetchQuestions();
+  }, []);
 
+  const fetchQuestions = async () => {
+    try {
+      const response = await axios.get("https://add-code.onrender.com/api/");
+      const questionsData = JSON.parse(response.data);
+      setQuestions(questionsData);
+    } catch (error) {
+      console.error("Error fetching questions:", error);
+    }
+  };
+
+  const handleQuestionSelect = async (question) => {
+    setSelectedQuestion(question);
+    try {
+      const response = await axios.get(`https://add-code.onrender.com/api/${question.id}`);
+      setQuestionDetails(response.data);
+    } catch (error) {
+      console.error("Error fetching question details:", error);
+    }
+  };
   const onSelectChange = (sl) => {
     console.log("selected Option...", sl);
     setLanguage(sl);
@@ -220,7 +246,7 @@ const Landing = () => {
       progress: undefined,
     });
   };
-  
+
   const handleSaveCode = () => {
   const savedCodes = JSON.parse(localStorage.getItem("savedCodes")) || [];
 
@@ -236,110 +262,131 @@ const Landing = () => {
   showSuccessToast("Code saved successfully!");
 };
   return (
-    <>
-      <ToastContainer
-        position="top-right"
-        autoClose={2000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
-
-     
-      
-      {/* <div className="h-4 w-full bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500"></div> */}
-     <Header/>
-     <div></div>
-  <div className="flex flex-row justify-between items-center p-4 rounded-md shadow-lg pt-20 relative z-5">
-  <div className="flex">
-    <div className="px-4 py-2">
-      <LanguagesDropdown onSelectChange={onSelectChange} />
-    </div>
-    <div className="px-4 py-2">
-      <ThemeDropdown handleThemeChange={handleThemeChange} theme={theme} />
-    </div>
-  </div>
-  {/* <div className="px-4 py-2">
-  <Link
-        to="/collab"
-        className="px-4 py-2 text-white bg-blue-500 rounded-md shadow-md hover:shadow-lg transition duration-200"
-      >
-        Collaborate
-      </Link></div> */}
-  <div className="px-4 py-1">
-    <input
-      className="border-gray-400 border-2 rounded-md p-2 placeholder-gray-500 shadow-md text-black bg-white mr-2 focus:outline-none focus:ring-2 focus:ring-purple-600"
-      type="text"
-      placeholder="Enter Title"
-      value={title}
-      onChange={(e) => setTitle(e.target.value)}
-    />
-    <button onClick={handleSaveCode} className={classnames(
-        "text-white bg-purple-600 border-2 border-purple-600 z-10 rounded-md shadow-md px-4 py-2 hover:bg-purple-700 transition duration-200",
-        "mt-2 ml-4", // adjust the margin values to match the other elements
-        !code ? "opacity-50 cursor-not-allowed" : ""
-      )}
-      disabled={!code}
-    >
-      Save Code
-    </button>
-  </div>
-</div>
-
-      <div className="flex flex-row space-x-4 items-start px-4 py-4">
-        <div className="flex flex-col w-full h-full justify-start items-end">
-          <CodeEditorWindow
-            code={code}
-            onChange={onChange}
-            language={language?.value}
-            theme={theme.value}
-          />
-        </div>
-
-        <div className="right-container flex flex-shrink-0 w-[30%] flex-col">
-        <button
-  onClick={handleCompile}
-  disabled={!code}
-  className={classnames(
-    "mt-4 mb-4 px-6 py-3 text-white rounded-md shadow-md hover:shadow-lg transition duration-200 bg-gradient-to-r from-green-500 to-green-700",
-    !code ? "opacity-50 cursor-not-allowed" : "",
-    processing ? "bg-green-500" : ""
-  )}
->
-
-  {processing ? (
-    <div className="flex items-center justify-center space-x-2">
-      <FaSpinner className="w-6 h-6 animate-spin" />
-      <span>Compiling...</span>
-    </div>
-  ) : (
-    <div className="flex items-center justify-center space-x-2">
-      <MdCode className="w-6 h-6" />
-      <span>Compile Code</span>
-    </div>
-  )}
-</button>
-
-
-        <CustomInput
-              customInput={customInput}
-              setCustomInput={setCustomInput}
-            />
-      
-
-          <div className="flex flex-col pt-4">
-               <OutputWindow outputDetails={outputDetails} />
-           
+      <>
+        <ToastContainer
+            position="top-right"
+            autoClose={2000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+        />
+        <Header />
+        <div className="my-8"></div>
+        <div className="container mx-auto px-4 mt-8">
+          <div className="flex justify-between items-center mb-4">
+            <div className="flex items-center space-x-4">
+              <input
+                  className="border-gray-400 border-2 rounded-md p-2 placeholder-gray-500 shadow-md text-black bg-white focus:outline-none focus:ring-2 focus:ring-purple-600"
+                  type="text"
+                  placeholder="Enter Title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+              />
+              <button
+                  onClick={handleSaveCode}
+                  className={classnames(
+                      "text-white bg-purple-600 border-2 border-purple-600 rounded-md shadow-md px-4 py-2 hover:bg-purple-700 transition duration-200",
+                      !code ? "opacity-50 cursor-not-allowed" : ""
+                  )}
+                  disabled={!code}
+              >
+                Save Code
+              </button>
+              <LanguagesDropdown onSelectChange={onSelectChange}/>
+              <ThemeDropdown handleThemeChange={handleThemeChange} theme={theme}/>
+            </div>
           </div>
-          {outputDetails && <OutputDetails outputDetails={outputDetails} />}
+          <h2 className="text-xl font-bold">Choose a Question</h2>
+          <div className="flex overflow-x-auto max-w-full">
+            {Array.isArray(questions) && questions.length > 0 ? (
+                questions.map((question) => (
+                    <div
+                        key={question.pk}
+                        className={`cursor-pointer p-2 border border-gray-200 rounded-md mr-4 ${
+                            selectedQuestion && selectedQuestion.pk === question.pk ? "bg-gray-200 outline-none border-purple-500" : ""
+                        }`}
+                        onClick={() => handleQuestionSelect(question)}
+                    >
+                      {question.fields.title}
+                    </div>
+                ))
+            ) : (
+                <div>No questions available</div>
+            )}
+          </div>
+          <div className="my-8"></div>
+          {selectedQuestion && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 border-2 border-black rounded-lg p-4 bg-gray-100">
+
+                <div>
+                  <div className="text-gray-800 font-normal text-sm">
+                    <div key={selectedQuestion.pk} className="mb-4">
+                      <h2 className="text-2xl font-bold mb-2">{selectedQuestion.pk}. {selectedQuestion.fields.title}</h2>
+                      <p className="text-lg text-gray-800 mb-4">{selectedQuestion.fields.description}</p>
+                      <h3 className="text-xl font-semibold mb-2">Constraints:</h3>
+                      <p className="text-lg text-gray-800">{selectedQuestion.fields.constraints}</p>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <CodeEditorWindow
+                      code={code}
+                      onChange={(value) => {
+                        setCode(value);
+                      }}
+                      language={language.value}
+                      theme={theme}
+                  />
+                  <div className="flex justify-end mt-4">
+                    <button
+                        onClick={handleCompile}
+                        disabled={!code}
+                        className={classnames(
+                            "px-6 py-3 text-white rounded-md shadow-md hover:shadow-lg transition duration-200 bg-gradient-to-r from-green-500 to-green-700",
+                            !code ? "opacity-50 cursor-not-allowed" : "",
+                            processing ? "bg-green-500" : ""
+                        )}
+                    >
+                      {processing ? (
+                          <div className="flex items-center space-x-3">
+                            <FaSpinner className="w-6 h-6 animate-spin"/>
+                            <span>Compiling...</span>
+                          </div>
+                      ) : (
+                          <div className="flex items-center space-x-3 ">
+                            <MdCode className="w-6 h-6"/>
+                            <span>Compile Code</span>
+                          </div>
+                      )}
+                    </button>
+                  </div>
+                </div>
+              </div>
+          )}
         </div>
-      </div>
-      <Footer />
-    </>
+        {selectedQuestion && (
+            <div className="container mx-auto px-4 mt-8">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                  <CustomInput customInput={customInput} setCustomInput={setCustomInput} />
+                </div>
+                <div>
+                  <OutputWindow outputDetails={outputDetails} />
+                </div>
+                <div>
+                  <OutputDetails outputDetails={outputDetails} />
+                </div>
+              </div>
+            </div>
+        )}
+        <Footer />
+      </>
   );
+
 };
+
 export default Landing;
