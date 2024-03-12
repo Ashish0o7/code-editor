@@ -1,5 +1,8 @@
 {
   "private": true,
+  "engines": {
+    "node": ">=14.20.1"
+  },
   "dependencies": {
     "@collab-ui/core": "^13.1.1",
     "@collab-ui/react": "^15.1.0",
