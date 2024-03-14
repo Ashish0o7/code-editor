@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import CodeEditorWindow from "./CodeEditorWindow";
 import axios from "axios";
+import ClipLoader from "react-spinners/ClipLoader";
 import { classnames } from "../utils/general";
 import { languageOptions } from "../constants/languageOptions";
 import { FaSpinner } from 'react-icons/fa';
@@ -68,6 +69,7 @@ const input_def=`5 4
 4 3`;
 
 const Landing = () => {
+  const [fetchingQuestions, setFetchingQuestions] = useState(false);
   const [code, setCode] = useState(javascriptDefault);
   const [questions, setQuestions] = useState([]);
   const [selectedQuestion, setSelectedQuestion] = useState(null);
@@ -90,6 +92,7 @@ const Landing = () => {
       const response = await axios.get("https://add-code.onrender.com/api/");
       const questionsData = JSON.parse(response.data);
       setQuestions(questionsData);
+      setFetchingQuestions(true);
     } catch (error) {
       console.error("Error fetching questions:", error);
     }
@@ -300,38 +303,59 @@ const Landing = () => {
               <ThemeDropdown handleThemeChange={handleThemeChange} theme={theme}/>
             </div>
           </div>
-          <h2 className="text-xl font-bold">Choose a Question</h2>
-          <div className="flex overflow-x-auto max-w-full">
-            {Array.isArray(questions) && questions.length > 0 ? (
-                questions.map((question) => (
-                    <div
-                        key={question.pk}
-                        className={`cursor-pointer p-2 border border-gray-200 rounded-md mr-4 ${
-                            selectedQuestion && selectedQuestion.pk === question.pk ? "bg-gray-200 outline-none border-purple-500" : ""
-                        }`}
-                        onClick={() => handleQuestionSelect(question)}
-                    >
-                      {question.fields.title}
-                    </div>
-                ))
-            ) : (
-                <div>No questions available</div>
-            )}
-          </div>
-          <div className="my-8"></div>
-          {selectedQuestion && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 border-2 border-black rounded-lg p-4 bg-gray-100">
-
-                <div>
-                  <div className="text-gray-800 font-normal text-sm">
-                    <div key={selectedQuestion.pk} className="mb-4">
-                      <h2 className="text-2xl font-bold mb-2">{selectedQuestion.pk}. {selectedQuestion.fields.title}</h2>
-                      <p className="text-lg text-gray-800 mb-4">{selectedQuestion.fields.description}</p>
-                      <h3 className="text-xl font-semibold mb-2">Constraints:</h3>
-                      <p className="text-lg text-gray-800">{selectedQuestion.fields.constraints}</p>
-                    </div>
-                  </div>
+          {!fetchingQuestions ? (
+              <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
+                <ClipLoader
+                    color={"#ffffff"} // Adjust the color to match your design
+                    loading={true}
+                    size={150}
+                />
+              </div>
+          ) : (
+              <>
+                <h2 className="text-xl font-bold">Choose a Question</h2>
+                <div className="flex overflow-x-auto max-w-full">
+                  {Array.isArray(questions) && questions.length > 0 ? (
+                      questions.map((question) => (
+                          <div
+                              key={question.pk}
+                              className={`cursor-pointer p-2 border border-gray-200 rounded-md mr-4 ${
+                                  selectedQuestion && selectedQuestion.pk === question.pk
+                                      ? "bg-gray-200 outline-none border-purple-500"
+                                      : ""
+                              }`}
+                              onClick={() => handleQuestionSelect(question)}
+                          >
+                            {question.fields.title}
+                          </div>
+                      ))
+                  ) : (
+                      <div>No questions available</div>
+                  )}
                 </div>
+              </>
+          )}
+
+          <div className="my-8"></div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 border-2 border-black rounded-lg p-4 bg-gray-100">
+                {selectedQuestion ? (
+                    <div>
+                      <div className="text-gray-800 font-normal text-sm">
+                        <div key={selectedQuestion.pk} className="mb-4">
+                          <h2 className="text-2xl font-bold mb-2">{selectedQuestion.pk}. {selectedQuestion.fields.title}</h2>
+                          <p className="text-lg text-gray-800 mb-4">{selectedQuestion.fields.description}</p>
+                          <h3 className="text-xl font-semibold mb-2">Constraints:</h3>
+                          <p className="text-lg text-gray-800">{selectedQuestion.fields.constraints}</p>
+                        </div>
+                      </div>
+                    </div>
+                ) : (
+                    <div className="flex items-center justify-center h-full">
+                      <h2 className="text-xl font-bold">Please select a question above</h2>
+                    </div>
+                )}
+
                 <div>
                   <CodeEditorWindow
                       code={code}
@@ -366,7 +390,7 @@ const Landing = () => {
                   </div>
                 </div>
               </div>
-          )}
+
         </div>
         {selectedQuestion && (
             <div className="container mx-auto px-4 mt-8">
