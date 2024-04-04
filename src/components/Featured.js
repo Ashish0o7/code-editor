@@ -54,9 +54,11 @@ const FeaturedCodes = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setShareCode(false);
+    const email2=loggedInUserEmail;
     await axios.post(
       "https://featured-code-server.onrender.com/api/codes",
-      newCode
+        { ...newCode, email: email2 },
+
     );
     setNewCode({ title: "", code: "" });
 
@@ -129,7 +131,7 @@ const FeaturedCodes = () => {
                     <div key={code.id} className="bg-white shadow-lg rounded-lg overflow-hidden">
                       <div className="p-4">
                         <h2 className="text-xl font-bold text-gray-800 mb-2">{code.title}</h2>
-                        {loggedInUserEmail && <p>Submitted by: {loggedInUserEmail}</p>}
+                        {<p>Submitted by: {code.email}</p>}
                         <div className="h-40 overflow-y-auto bg-gray-100 p-2 rounded-md">
                           <pre className="text-sm text-gray-800">{code.code}</pre>
                         </div>
