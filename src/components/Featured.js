@@ -150,7 +150,7 @@ const FeaturedCodes = () => {
                               Submit Rating
                             </button>
                           </div>
-                          <p className="text-gray-700 mt-1">Average Rating: {code.averageRating}</p>
+                          <p className="text-gray-700 mt-1">Average Rating: {code.totalRating/code.ratingCount}</p>
                         </div>
                       </div>
                     </div>
