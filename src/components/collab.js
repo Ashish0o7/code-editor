@@ -182,7 +182,7 @@ const CollabEditor = () => {
   const socketRef = useRef();
 
   useEffect(() => {
-    socketRef.current = io.connect('http://localhost:8000'); // Update the URL as per your Socket.IO server configuration
+    socketRef.current = io.connect('https://chat-code-server.onrender.com'); // Update the URL as per your Socket.IO server configuration
 
     socketRef.current.on('connect', () => {
       setIsConnected(true);
