@@ -90,9 +90,8 @@ const Landing = () => {
   const fetchQuestions = async () => {
     try {
       const response = await axios.get("https://add-code.onrender.com/api/");
-      const questionsData = JSON.parse(response.data);
-      setQuestions(questionsData);
-      setFetchingQuestions(true);
+      setQuestions(response.data);
+        setFetchingQuestions(true);
     } catch (error) {
       console.error("Error fetching questions:", error);
     }
@@ -407,7 +406,7 @@ const Landing = () => {
               </div>
             </div>
         )}
-        <Footer />
+       
       </>
   );
 
