@@ -111,6 +111,11 @@ const Landing = () => {
     console.error("Error fetching questions:", error);
   }
 };
+const handleRefresh = () => {
+  localStorage.removeItem(CACHE_KEY);
+  localStorage.removeItem(CACHE_TIMESTAMP_KEY);
+  fetchQuestions();
+};
 
   const handleQuestionSelect = async (question) => {
     setSelectedQuestion(question);
@@ -315,6 +320,10 @@ const Landing = () => {
               </button>
               <LanguagesDropdown onSelectChange={onSelectChange}/>
               <ThemeDropdown handleThemeChange={handleThemeChange} theme={theme}/>
+              <button 
+                   onClick={handleRefresh}
+                    className="text-white bg-black-600 border-2 border-purple-600 rounded-md shadow-md px-4 py-2 hover:bg-green-700 transition duration-200"
+                    >Refresh Questions</button>
             </div>
           </div>
           {!fetchingQuestions ? (
