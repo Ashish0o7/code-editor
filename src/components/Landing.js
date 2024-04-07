@@ -322,7 +322,7 @@ const handleRefresh = () => {
               <ThemeDropdown handleThemeChange={handleThemeChange} theme={theme}/>
               <button 
                    onClick={handleRefresh}
-                    className="text-white bg-black-600 border-2 border-purple-600 rounded-md shadow-md px-4 py-2 hover:bg-green-700 transition duration-200"
+                    className="text-white bg-black border-2 border-purple-600 rounded-md shadow-md px-4 py-2 hover:bg-green-700 transition duration-200"
                     >Refresh Questions</button>
             </div>
           </div>
