@@ -117,15 +117,9 @@ const handleRefresh = () => {
   fetchQuestions();
 };
 
-  const handleQuestionSelect = async (question) => {
+  const handleQuestionSelect = (question) => {
     setSelectedQuestion(question);
-    try {
-      const response = await axios.get(`https://add-code.onrender.com/api/${question.id}`);
-      setQuestionDetails(response.data);
-    } catch (error) {
-      console.error("Error fetching question details:", error);
-    }
-  };
+};
   const onSelectChange = (sl) => {
     console.log("selected Option...", sl);
     setLanguage(sl);
