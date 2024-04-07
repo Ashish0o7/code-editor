@@ -82,20 +82,35 @@ const Landing = () => {
    const [title, setTitle] = useState("");
   const enterPress = useKeyPress("Enter");
   const ctrlPress = useKeyPress("Control");
+  const CACHE_KEY = 'questions';
+  const CACHE_TIMESTAMP_KEY = 'questions_timestamp';
+  const CACHE_LIFETIME = 3600000; 
   useEffect(() => {
     // Fetch questions when the component mounts
     fetchQuestions();
   }, []);
 
   const fetchQuestions = async () => {
-    try {
+  try {
+    const now = new Date().getTime();
+    const cachedTimestamp = localStorage.getItem(CACHE_TIMESTAMP_KEY);
+    let questionsData = localStorage.getItem(CACHE_KEY);
+
+    if (!questionsData || now - cachedTimestamp > CACHE_LIFETIME) {
       const response = await axios.get("https://add-code.onrender.com/api/");
-      setQuestions(response.data);
-        setFetchingQuestions(true);
-    } catch (error) {
-      console.error("Error fetching questions:", error);
+      questionsData = response.data;
+      localStorage.setItem(CACHE_KEY, JSON.stringify(questionsData));
+      localStorage.setItem(CACHE_TIMESTAMP_KEY, now.toString());
+    } else {
+      questionsData = JSON.parse(questionsData);
     }
-  };
+    
+    setQuestions(questionsData);
+    setFetchingQuestions(true);
+  } catch (error) {
+    console.error("Error fetching questions:", error);
+  }
+};
 
   const handleQuestionSelect = async (question) => {
     setSelectedQuestion(question);
