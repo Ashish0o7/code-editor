@@ -149,51 +149,85 @@ const handleRefresh = () => {
       }
     }
   };
+  // const handleCompile = () => {
+  //   setProcessing(true);
+  //   const formData = {
+  //     language_id: language.id,
+  //     // encode source code in base64
+  //     source_code: btoa(code),
+  //     stdin: btoa(customInput),
+  //   };
+  //   const options = {
+  //     method: "POST",
+  //     url: process.env.REACT_APP_RAPID_API_URL,
+  //     params: { base64_encoded: "true", fields: "*" },
+  //     headers: {
+  //       "content-type": "application/json",
+  //       "Content-Type": "application/json",
+  //       "X-RapidAPI-Host": process.env.REACT_APP_RAPID_API_HOST,
+  //       "X-RapidAPI-Key": process.env.REACT_APP_RAPID_API_KEY,
+  //     },
+  //     data: formData,
+  //   };
+
+  //   axios
+  //     .request(options)
+  //     .then(function (response) {
+  //       console.log("res.data", response.data);
+  //       const token = response.data.token;
+  //       checkStatus(token);
+  //     })
+  //     .catch((err) => {
+  //       let error = err.response ? err.response.data : err;
+  //       // get error status
+  //       let status = err.response.status;
+  //       console.log("status", status);
+  //       if (status === 429) {
+  //         console.log("too many requests", status);
+
+  //         showErrorToast(
+  //           `Quota of 100 requests exceeded for the Day! !`,
+  //           10000
+  //         );
+  //       }
+  //       setProcessing(false);
+  //       console.log("catch block...", error);
+  //     });
+  // };
   const handleCompile = () => {
     setProcessing(true);
+
+    const userEmail = localStorage.getItem('email'); 
+    if (!userEmail) {
+      showErrorToast('User email not found. Please login again.', 5000);
+      setProcessing(false);
+      return; 
+    }
+
     const formData = {
+      email: userEmail, 
       language_id: language.id,
-      // encode source code in base64
       source_code: btoa(code),
       stdin: btoa(customInput),
     };
-    const options = {
-      method: "POST",
-      url: process.env.REACT_APP_RAPID_API_URL,
-      params: { base64_encoded: "true", fields: "*" },
-      headers: {
-        "content-type": "application/json",
-        "Content-Type": "application/json",
-        "X-RapidAPI-Host": process.env.REACT_APP_RAPID_API_HOST,
-        "X-RapidAPI-Key": process.env.REACT_APP_RAPID_API_KEY,
-      },
-      data: formData,
-    };
 
-    axios
-      .request(options)
-      .then(function (response) {
-        console.log("res.data", response.data);
-        const token = response.data.token;
-        checkStatus(token);
-      })
-      .catch((err) => {
-        let error = err.response ? err.response.data : err;
-        // get error status
-        let status = err.response.status;
-        console.log("status", status);
-        if (status === 429) {
-          console.log("too many requests", status);
-
-          showErrorToast(
-            `Quota of 100 requests exceeded for the Day! !`,
-            10000
-          );
-        }
-        setProcessing(false);
-        console.log("catch block...", error);
-      });
+    axios.post('/compile', formData)
+        .then(response => {
+          // Handle success
+          const token = response.data.token;
+          checkStatus(token);
+        })
+        .catch(error => {
+          // Handle errors and rate limiting
+          if (error.response && error.response.status === 429) {
+            showErrorToast('You have exceeded the limit of 3 requests per minute', 10000);
+          } else {
+            // Handle other errors
+          }
+          setProcessing(false);
+        });
   };
+
 
   const checkStatus = async (token) => {
     const options = {
