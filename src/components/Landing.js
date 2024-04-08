@@ -340,9 +340,9 @@ const Landing = () => {
 
     if (userEmail && userEmail === question.email) {
       try {
-        await axios.delete(`http://localhost:3001/api/questions/${question._id}`, { data: { email: userEmail } });
+        await axios.delete(`https://featured-code-server.onrender.com/api/questions/${question._id}`, { data: { email: userEmail } });
         toast.success("Question deleted successfully!");
-        // Refresh the list of questions
+        
         fetchQuestions();
       } catch (error) {
         console.error("Error deleting question:", error);
