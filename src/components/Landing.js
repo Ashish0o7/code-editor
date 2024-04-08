@@ -342,6 +342,7 @@ const Landing = () => {
       try {
         await axios.delete(`https://featured-code-server.onrender.com/api/questions/${question._id}`, { data: { email: userEmail } });
         toast.success("Question deleted successfully!");
+        handleRefresh();
         
         fetchQuestions();
       } catch (error) {
