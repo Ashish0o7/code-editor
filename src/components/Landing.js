@@ -82,44 +82,56 @@ const Landing = () => {
    const [title, setTitle] = useState("");
   const enterPress = useKeyPress("Enter");
   const ctrlPress = useKeyPress("Control");
-  const CACHE_KEY = 'questions';
-  const CACHE_TIMESTAMP_KEY = 'questions_timestamp';
-  const CACHE_LIFETIME = 3600000; 
   useEffect(() => {
     // Fetch questions when the component mounts
     fetchQuestions();
   }, []);
 
+  const CACHE_KEY = 'questions';
+  const CACHE_TIMESTAMP_KEY = 'questions_timestamp';
+  const CACHE_LIFETIME = 3600000; // 1 hour in milliseconds
+
   const fetchQuestions = async () => {
-  try {
-    const now = new Date().getTime();
-    const cachedTimestamp = localStorage.getItem(CACHE_TIMESTAMP_KEY);
-    let questionsData = localStorage.getItem(CACHE_KEY);
+    try {
+      const now = new Date().getTime();
+      const cachedTimestamp = localStorage.getItem(CACHE_TIMESTAMP_KEY);
+      let questionsData = localStorage.getItem(CACHE_KEY);
 
-    if (!questionsData || now - cachedTimestamp > CACHE_LIFETIME) {
-      const response = await axios.get("https://add-code.onrender.com/api/");
-      questionsData = response.data;
-      localStorage.setItem(CACHE_KEY, JSON.stringify(questionsData));
-      localStorage.setItem(CACHE_TIMESTAMP_KEY, now.toString());
-    } else {
-      questionsData = JSON.parse(questionsData);
+      if (!questionsData || now - parseInt(cachedTimestamp) > CACHE_LIFETIME) {
+
+        const response = await axios.get("https://featured-code-server.onrender.com/api/questions");
+        questionsData = response.data;
+        localStorage.setItem(CACHE_KEY, JSON.stringify(questionsData));
+        localStorage.setItem(CACHE_TIMESTAMP_KEY, now.toString());
+      } else {
+        questionsData = JSON.parse(questionsData);
+      }
+
+      setQuestions(questionsData);
+      setFetchingQuestions(true);
+    } catch (error) {
+      console.error("Error fetching questions:", error);
     }
-    
-    setQuestions(questionsData);
-    setFetchingQuestions(true);
-  } catch (error) {
-    console.error("Error fetching questions:", error);
-  }
-};
-const handleRefresh = () => {
-  localStorage.removeItem(CACHE_KEY);
-  localStorage.removeItem(CACHE_TIMESTAMP_KEY);
-  fetchQuestions();
-};
+  };
 
-  const handleQuestionSelect = (question) => {
+  const handleRefresh = () => {
+    localStorage.removeItem(CACHE_KEY);
+    localStorage.removeItem(CACHE_TIMESTAMP_KEY);
+    fetchQuestions();
+  };
+
+  const handleQuestionSelect = async (question) => {
     setSelectedQuestion(question);
-};
+    try {
+      console.log(`Fetching details for ID: ${question._id}`);
+
+      const response = await axios.get(`https://featured-code-server.onrender.com/api/questions/${question._id}`);
+      setQuestionDetails(response.data); // Assuming response.data contains the question details
+    } catch (error) {
+      console.error("Error fetching question details:", error);
+    }
+  };
+
   const onSelectChange = (sl) => {
     console.log("selected Option...", sl);
     setLanguage(sl);
@@ -132,6 +144,13 @@ const handleRefresh = () => {
       handleCompile();
     }
   }, [ctrlPress, enterPress]);
+
+
+  useEffect(() => {
+    if (selectedQuestion) {
+      setCustomInput(selectedQuestion.testcase);
+    }
+  }, [selectedQuestion]);
   const onChange = (action, data) => {
     switch (action) {
       case "code": {
@@ -163,7 +182,7 @@ const handleRefresh = () => {
   //     },
   //     data: formData,
   //   };
-
+  //
   //   axios
   //     .request(options)
   //     .then(function (response) {
@@ -178,7 +197,7 @@ const handleRefresh = () => {
   //       console.log("status", status);
   //       if (status === 429) {
   //         console.log("too many requests", status);
-
+  //
   //         showErrorToast(
   //           `Quota of 100 requests exceeded for the Day! !`,
   //           10000
@@ -191,21 +210,22 @@ const handleRefresh = () => {
   const handleCompile = () => {
     setProcessing(true);
 
-    const userEmail = localStorage.getItem('email'); 
+    // Retrieve the user's email from localStorage
+    const userEmail = localStorage.getItem('email'); // Assuming the email is stored with the key 'email'
     if (!userEmail) {
       showErrorToast('User email not found. Please login again.', 5000);
       setProcessing(false);
-      return; 
+      return; // Exit the function if the email is not available
     }
 
     const formData = {
-      email: userEmail, 
+      email: userEmail, // Use the retrieved email
       language_id: language.id,
       source_code: btoa(code),
       stdin: btoa(customInput),
     };
 
-    axios.post('https://featured-code-server.onrender.com/compile', formData)
+    axios.post('/compile', formData)
         .then(response => {
           // Handle success
           const token = response.data.token;
@@ -222,7 +242,6 @@ const handleRefresh = () => {
         });
   };
 
-
   const checkStatus = async (token) => {
     const options = {
       method: "GET",
@@ -236,10 +255,7 @@ const handleRefresh = () => {
     try {
       let response = await axios.request(options);
       let statusId = response.data.status?.id;
-
-      // Processed - we have a result
       if (statusId === 1 || statusId === 2) {
-        // still processing
         setTimeout(() => {
           checkStatus(token);
         }, 2000);
@@ -311,6 +327,24 @@ const handleRefresh = () => {
   localStorage.setItem("savedCodes", JSON.stringify(savedCodes));
   showSuccessToast("Code saved successfully!");
 };
+  const handleDeleteQuestion = async (question) => {
+    const userEmail = localStorage.getItem('email');
+
+    if (userEmail && userEmail === question.email) {
+      try {
+        await axios.delete(`http://localhost:3001/api/questions/${question._id}`, { data: { email: userEmail } });
+        toast.success("Question deleted successfully!");
+        // Refresh the list of questions
+        fetchQuestions();
+      } catch (error) {
+        console.error("Error deleting question:", error);
+        toast.error("Error occurred while deleting the question.");
+      }
+    } else {
+      toast.error("You can only delete questions submitted by you.");
+    }
+  };
+
   return (
       <>
         <ToastContainer
@@ -348,16 +382,19 @@ const handleRefresh = () => {
               </button>
               <LanguagesDropdown onSelectChange={onSelectChange}/>
               <ThemeDropdown handleThemeChange={handleThemeChange} theme={theme}/>
-              <button 
-                   onClick={handleRefresh}
-                    className="text-white bg-black border-2 border-purple-600 rounded-md shadow-md px-4 py-2 hover:bg-green-700 transition duration-200"
-                    >Refresh Questions</button>
-            </div>
+              <button
+                  onClick={handleRefresh}
+                  className="text-white bg-black border-2 border-purple-600 rounded-md shadow-md px-4 py-2 hover:bg-green-700 transition duration-200"
+              >Refresh Questions
+              </button>
+            
           </div>
-          {!fetchingQuestions ? (
-              <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
-                <ClipLoader
-                    color={"#ffffff"} // Adjust the color to match your design
+        </div>
+        {!fetchingQuestions ? (
+            <div
+                className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
+              <ClipLoader
+                  color={"#ffffff"} // Adjust the color to match your design
                     loading={true}
                     size={150}
                 />
@@ -365,45 +402,54 @@ const handleRefresh = () => {
           ) : (
               <>
                 <h2 className="text-xl font-bold">Choose a Question</h2>
-                <div className="flex overflow-x-auto max-w-full">
+                <div className="flex overflow-x-auto max-w-full gap-4"> {/* Added gap-4 class */}
                   {Array.isArray(questions) && questions.length > 0 ? (
                       questions.map((question) => (
-                          <div
-                              key={question.pk}
-                              className={`cursor-pointer p-2 border border-gray-200 rounded-md mr-4 ${
-                                  selectedQuestion && selectedQuestion.pk === question.pk
-                                      ? "bg-gray-200 outline-none border-purple-500"
-                                      : ""
-                              }`}
-                              onClick={() => handleQuestionSelect(question)}
-                          >
-                            {question.fields.title}
+                          <div key={question._id}
+                               className="flex items-center bg-white shadow-md rounded-md"> {/* Added styling for each question */}
+                            <div
+                                className="cursor-pointer flex-grow p-2 border-r border-gray-200 rounded-l-md"
+                                onClick={() => handleQuestionSelect(question)}
+                            >
+                              {question.title}
+                            </div>
+                            <span
+                                className="cursor-pointer text-white bg-red-500 hover:bg-red-700 rounded-r-md px-2 py-2 flex items-center justify-center"
+                                onClick={() => handleDeleteQuestion(question)}
+                                title="Delete Question"
+                            >
+                    &#10005; {/* Unicode character for a heavy multiplication sign */}
+                </span>
                           </div>
                       ))
                   ) : (
                       <div>No questions available</div>
                   )}
                 </div>
+
               </>
           )}
 
           <div className="my-8"></div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 border-2 border-black rounded-lg p-4 bg-gray-100">
-                {selectedQuestion ? (
-                    <div>
-                      <div className="text-gray-800 font-normal text-sm">
-                        <div key={selectedQuestion.pk} className="mb-4">
-                          <h2 className="text-2xl font-bold mb-2">{selectedQuestion.pk}. {selectedQuestion.fields.title}</h2>
-                          <p className="text-lg text-gray-800 mb-4">{selectedQuestion.fields.description}</p>
-                          <h3 className="text-xl font-semibold mb-2">Constraints:</h3>
-                          <p className="text-lg text-gray-800">{selectedQuestion.fields.constraints}</p>
-                        </div>
-                      </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 border-2 border-black rounded-lg p-4 bg-gray-100">
+            {selectedQuestion ? (
+                <div>
+                  <div className="text-gray-800 font-normal text-sm">
+                    <div key={selectedQuestion._id} className="mb-4">
+                      <h2 className="text-2xl font-bold mb-2">{selectedQuestion.title}</h2>
+                      <p className="text-lg text-gray-800 mb-4">{selectedQuestion.description}</p>
+                      <h3 className="text-xl font-semibold mb-2">Constraints:</h3>
+                      <p className="text-lg text-gray-800">{selectedQuestion.constraints}</p>
+                      <h3 className="text-xl font-semibold mb-2">Examples: </h3>
+                      <p className="text-lg text-gray-800">{selectedQuestion.examples}</p>
                     </div>
-                ) : (
-                    <div className="flex items-center justify-center h-full">
-                      <h2 className="text-xl font-bold">Please select a question above</h2>
+                  </div>
+                </div>
+
+            ) : (
+                <div className="flex items-center justify-center h-full">
+                  <h2 className="text-xl font-bold">Please select a question above</h2>
                     </div>
                 )}
 
@@ -458,7 +504,7 @@ const handleRefresh = () => {
               </div>
             </div>
         )}
-       
+        <Footer />
       </>
   );
 
