@@ -36,9 +36,8 @@ const AddQuestion = () => {
             return;
         }
 
-        const qid = uuidv4(); // Generate a unique qid
         try {
-            const response = await axios.post('http://localhost:3001/api/questions', { ...formData, qid });
+            const response = await axios.post('https://featured-code-server.onrender.com/api/questions', { ...formData});
             toast.success("Question added successfully!");
             // Reset form or handle success
         } catch (error) {
