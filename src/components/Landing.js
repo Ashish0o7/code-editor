@@ -504,7 +504,7 @@ const Landing = () => {
               </div>
             </div>
         )}
-        <Footer />
+     
       </>
   );
 
