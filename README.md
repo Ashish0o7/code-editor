@@ -1,11 +1,11 @@
 # Home Page
-![Home](https://res.cloudinary.com/dngfbi8t1/image/upload/v1685213103/ss1-code_scqlhv.jpg)
+[![Screenshot-2024-04-09-at-3-20-26-AM.png](https://i.postimg.cc/QdS2NYm5/Screenshot-2024-04-09-at-3-20-26-AM.png)](https://postimg.cc/ZWB7Vc1K)
 # Featured Page, with rating
-![Featured Page](https://res.cloudinary.com/dngfbi8t1/image/upload/v1685221715/ss5-code_ubt0ut.jpg)
+[![Screenshot-2024-04-09-at-3-16-35-AM.png](https://i.postimg.cc/KjqGMcr7/Screenshot-2024-04-09-at-3-16-35-AM.png)](https://postimg.cc/0KS1gs4r)
 # Collab in realtime
-![](https://res.cloudinary.com/dngfbi8t1/image/upload/v1685213103/ss4-code_qlvjit.jpg)
-# Save Codes
-![](https://res.cloudinary.com/dngfbi8t1/image/upload/v1685213103/ss2-code_ztka6v.jpg)
+[![Screenshot-2024-04-09-at-3-16-58-AM.png](https://i.postimg.cc/9QG33FRx/Screenshot-2024-04-09-at-3-16-58-AM.png)](https://postimg.cc/CRLrk04D)
+# Add Code
+[![Screenshot-2024-04-09-at-3-17-03-AM.png](https://i.postimg.cc/wxm3tLS3/Screenshot-2024-04-09-at-3-17-03-AM.png)](https://postimg.cc/Dm77HJfK)
 # Code Editor
 
 This is a code editor built with React.js that allows users to write, edit, and save code within the browser. It includes features such as compilation, output data display, and a featured section, as well as a secure login and registration system.
@@ -23,6 +23,10 @@ This is a code editor built with React.js that allows users to write, edit, and 
 - Firebase
 - Axios
 - Express.js
+- Django
+- Redis
+- Mongoose
+  
 
 
 ## Getting Started
