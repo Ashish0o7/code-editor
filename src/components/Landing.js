@@ -121,16 +121,24 @@ const Landing = () => {
   };
 
   const handleQuestionSelect = async (question) => {
-    setSelectedQuestion(question);
-    try {
-      console.log(`Fetching details for ID: ${question._id}`);
+ 
+  if (selectedQuestion && question._id === selectedQuestion._id) {
+    toast.info("You've already selected this question!");
+    return;
+  }
 
-      const response = await axios.get(`https://featured-code-server.onrender.com/api/questions/${question._id}`);
-      setQuestionDetails(response.data); // Assuming response.data contains the question details
-    } catch (error) {
-      console.error("Error fetching question details:", error);
-    }
-  };
+  setSelectedQuestion(question);
+  try {
+    console.log(`Fetching details for ID: ${question._id}`);
+
+    const response = await axios.get(`https://featured-code-server.onrender.com/api/questions/${question._id}`);
+    setQuestionDetails(response.data); 
+  } catch (error) {
+    console.error("Error fetching question details:", error);
+    toast.error("Error fetching question details!");
+  }
+};
+
 
   const onSelectChange = (sl) => {
     console.log("selected Option...", sl);
