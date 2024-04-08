@@ -1,3 +1,19 @@
+# Structure
+It got 3 servers all hosted differently, one for adding questions( using Django, I've removed it now and merged with others), server for Collaboration and server of featured codes.
+
+## Backend
+
+### 1. Featured Codes and Adding,deleting new codes server
+Repo: https://github.com/Ashish0o7/chat-code-server/tree/master
+
+### 2. Collaboration and chatting
+Repo: https://github.com/Ashish0o7/chat-code-server/tree/main
+
+### 3. Adding questions
+Repo: https://github.com/Ashish0o7/add_codes_server
+( I've discontinued it, and for more robust process, merged these operations with Featured codes)
+
+
 # Home Page
 [![Screenshot-2024-04-09-at-3-22-57-AM.png](https://i.postimg.cc/P5GcMpf6/Screenshot-2024-04-09-at-3-22-57-AM.png)](https://postimg.cc/fJKBzb9X)
 # Featured Page, with rating
@@ -19,24 +35,23 @@ This is a code editor built with React.js that allows users to write, edit, and 
 
 ## Technologies Used
 
-- React.js
-- Firebase
-- Axios
-- Express.js
-- Django
-- Redis
-- Mongoose
+- Frontend: React.js
+- Backend: NodeJS, Django, Express.js
+- Database: MongoDB, Redis
+- Authentication: Firebase
+- APIs & Libraries: Axios, Socket.IO, Mongoose
+- Architecture: Microservices
   
 
 
 ## Getting Started
 
 1. Clone the repository:
-
+   
 git clone https://github.com/Ashish0o7/code-editor.git
 
 
-2. Install the dependencies:
+3. Install the dependencies:
 
 cd code-editor
 npm install
