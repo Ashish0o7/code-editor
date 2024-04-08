@@ -22,16 +22,27 @@ Repo: https://github.com/Ashish0o7/add_codes_server
 [![Screenshot-2024-04-09-at-3-23-13-AM.png](https://i.postimg.cc/bJNkcTgm/Screenshot-2024-04-09-at-3-23-13-AM.png)](https://postimg.cc/JyvGjj9X)
 # Add Code
 [![Screenshot-2024-04-09-at-3-23-17-AM.png](https://i.postimg.cc/k43MWX6K/Screenshot-2024-04-09-at-3-23-17-AM.png)](https://postimg.cc/mcjGs4Sg)
-# Code Editor
 
-This is a code editor built with React.js that allows users to write, edit, and save code within the browser. It includes features such as compilation, output data display, and a featured section, as well as a secure login and registration system.
+# Byte Builder
+The Code Editor is a cutting-edge platform tailored for programmers and developers. It enables you to write, edit, save, and compile code both individually and collaboratively. This application stands out by merging real-time collaboration with the ability to share and evaluate high-quality code snippets. Furthermore, it offers a unique feature where users can share coding questions, fostering a collaborative and supportive environment for learning and problem-solving. Designed with a user-friendly interface, this editor ensures a seamless and enriching coding experience for all users.
 
 ## Features
 
-- Write, edit, and save code directly within the browser
-- Compile and run code, with output data display showing time and memory usage
-- Featured section showcasing high-quality code snippets submitted by other users
-- Secure login and registration system for user management
+### 1. Real-Time Collaboration
+Collaborate seamlessly with others on coding projects in real-time, boosting productivity and teamwork.
+
+### 2. Code Compilation and Execution
+Write and execute code within the browser, with instant feedback on output, time, and memory usage.
+
+### 3. Community-Driven Code Sharing
+Discover and rate high-quality code snippets shared by the user community, fostering a culture of peer learning.
+
+### 4. Secure Authentication
+A robust login and registration system ensures the security and management of user data.
+
+### 5. Enhanced Performance with Redis
+Integrates Redis for efficient data handling, significantly improving system performance.
+
 
 ## Technologies Used
 
@@ -48,18 +59,22 @@ This is a code editor built with React.js that allows users to write, edit, and 
 
 1. Clone the repository:
    
+```
 git clone https://github.com/Ashish0o7/code-editor.git
+```
 
 
 3. Install the dependencies:
 
+```
 cd code-editor
 npm install
-
+```
 
 3. Start the server:
 
-npm start
+```npm run start
+```
 
 
 
