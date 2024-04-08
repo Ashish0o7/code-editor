@@ -6,6 +6,7 @@ import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 import "firebase/compat/database";
 import "firebase/compat/storage";
+import AddQuestion from "./add_question";
 import SavedCodes from './SavedCodes';
 import FeaturedCodes from './Featured';
 import { useNavigate } from "react-router-dom";
@@ -35,7 +36,7 @@ function Header() {
         <Link to="/saved-codes" className="text-sm sm:text-base font-medium hover:text-gray-300 transition duration-200">Saved Codes</Link>
         <Link to="/collab" className="text-sm sm:text-base font-medium hover:text-gray-300 transition duration-200">Collaborate</Link>
         <Link to="/featured" className="text-sm sm:text-base font-medium hover:text-gray-300 transition duration-200">Featured Codes</Link>
-        <a href="https://add-code.onrender.com/api/add/" className="text-sm sm:text-base font-medium hover:text-gray-300 transition duration-200">Add Questions</a>
+        <Link to="/add_question" className="text-sm sm:text-base font-medium hover:text-gray-300 transition duration-200">Add Question</Link>
       </div>
 
       <div className="flex items-center space-x-2">
