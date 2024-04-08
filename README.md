@@ -73,12 +73,64 @@ npm install
 
 3. Start the server:
 
-```npm run start
+```
+npm run start
+```
+4. Open your browser and go to `http://localhost:3000` to use the code editor.
+   
+## Backend 
+
+1. Clone these repositories seperately
+
+###  Featured Codes and Adding,deleting new codes server
+Repo: https://github.com/Ashish0o7/chat-code-server/tree/master
+
+###  Collaboration and chatting
+Repo: https://github.com/Ashish0o7/chat-code-server/tree/main
+
+
+2. Install dependencies for both
+```
+npm install
+```
+
+3. To Start collaboration server
+```
+node server.js
+```
+4.
+To start Featured codes and questions server
+```
+node server2.js
+```
+
+5. By this time, your frontend and both the server would be running
+
+6. Now go ahead and setup .env file for both frontend and backend server
+
+#### For frontend
+
+```
+REACT_APP_FIREBASE_API_KEY=
+REACT_APP_FIREBASE_AUTH_DOMAIN=
+REACT_APP_FIREBASE_PROJECT_ID=
+REACT_APP_FIREBASE_STORAGE_BUCKET=
+REACT_APP_FIREBASE_MESSAGING_SENDER_ID=
+REACT_APP_FIREBASE_APP_ID=
+REACT_APP_FIREBASE_MEASUREMENT_ID=
+```
+
+### For backend server
+```
+REACT_APP_RAPID_API_URL = ''
+REACT_APP_RAPID_API_HOST = ''
+REACT_APP_RAPID_API_KEY = ''
+
 ```
 
 
 
-4. Open your browser and go to `http://localhost:3000` to use the code editor.
+
 
 ## Contributing
 
