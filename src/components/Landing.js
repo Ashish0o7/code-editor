@@ -353,169 +353,191 @@ const Landing = () => {
       toast.error("You can only delete questions submitted by you.");
     }
   };
+ useEffect(() => {
+    if (!fetchingQuestions) {
 
+      const timer = setTimeout(() => {
+        toast.info("Questions are fetching slowly due to free hosting service limitations.", {
+          position: toast.POSITION.TOP_CENTER
+        });
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [fetchingQuestions]);
   return (
       <>
-        <ToastContainer
-            position="top-right"
-            autoClose={2000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-        />
-        <Header />
-        <div className="my-8"></div>
-        <div className="container mx-auto px-4 mt-8">
-          <div className="flex justify-between items-center mb-4">
-            <div className="flex items-center space-x-4">
-              <input
-                  className="border-gray-400 border-2 rounded-md p-2 placeholder-gray-500 shadow-md text-black bg-white focus:outline-none focus:ring-2 focus:ring-purple-600"
-                  type="text"
-                  placeholder="Enter Title"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-              />
-              <button
-                  onClick={handleSaveCode}
-                  className={classnames(
-                      "text-white bg-purple-600 border-2 border-purple-600 rounded-md shadow-md px-4 py-2 hover:bg-purple-700 transition duration-200",
-                      !code ? "opacity-50 cursor-not-allowed" : ""
-                  )}
-                  disabled={!code}
-              >
-                Save Code
-              </button>
-              <LanguagesDropdown onSelectChange={onSelectChange}/>
-              <ThemeDropdown handleThemeChange={handleThemeChange} theme={theme}/>
-              <button
-                  onClick={handleRefresh}
-                  className="text-white bg-black border-2 border-purple-600 rounded-md shadow-md px-4 py-2 hover:bg-green-700 transition duration-200"
-              >Refresh Questions
-              </button>
-            
+      <ToastContainer
+          position="top-right"
+          autoClose={2000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+      />
+      <Header/>
+      <div className="my-8"></div>
+      <div className="container mx-auto px-4 mt-8">
+        <div className="flex justify-between items-center mb-4">
+          <div className="flex items-center space-x-4">
+            <input
+                className="border-gray-400 border-2 rounded-md p-2 placeholder-gray-500 shadow-md text-black bg-white focus:outline-none focus:ring-2 focus:ring-purple-600"
+                type="text"
+                placeholder="Enter Title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+            />
+            <button
+                onClick={handleSaveCode}
+                className={classnames(
+                    "text-white bg-purple-600 border-2 border-purple-600 rounded-md shadow-md px-4 py-2 hover:bg-purple-700 transition duration-200",
+                    !code ? "opacity-50 cursor-not-allowed" : ""
+                )}
+                disabled={!code}
+            >
+              Save Code
+            </button>
+            <LanguagesDropdown onSelectChange={onSelectChange}/>
+            <ThemeDropdown handleThemeChange={handleThemeChange} theme={theme}/>
+            <button
+                onClick={handleRefresh}
+                className="text-white bg-black border-2 border-purple-600 rounded-md shadow-md px-4 py-2 hover:bg-green-700 transition duration-200"
+            >Refresh Questions
+            </button>
+
           </div>
         </div>
         {!fetchingQuestions ? (
-            <div
-                className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
-              <ClipLoader
-                  color={"#ffffff"} // Adjust the color to match your design
-                    loading={true}
-                    size={150}
-                />
-              </div>
-          ) : (
-              <>
-                <h2 className="text-xl font-bold">Choose a Question</h2>
-                <div className="flex overflow-x-auto max-w-full gap-4"> {/* Added gap-4 class */}
-                  {Array.isArray(questions) && questions.length > 0 ? (
-                      questions.map((question) => (
-                          <div key={question._id}
-                               className="flex items-center bg-white shadow-md rounded-md"> {/* Added styling for each question */}
-                            <div
-                                className="cursor-pointer flex-grow p-2 border-r border-gray-200 rounded-l-md"
-                                onClick={() => handleQuestionSelect(question)}
-                            >
-                              {question.title}
-                            </div>
-                            <span
-                                className="cursor-pointer text-white bg-red-500 hover:bg-red-700 rounded-r-md px-2 py-2 flex items-center justify-center"
-                                onClick={() => handleDeleteQuestion(question)}
-                                title="Delete Question"
-                            >
-                    &#10005; {/* Unicode character for a heavy multiplication sign */}
-                </span>
-                          </div>
-                      ))
-                  ) : (
-                      <div>No questions available</div>
-                  )}
-                </div>
+            <div className="flex overflow-x-auto max-w-full gap-4">
+              {Array.from({length: 5}).map((_, index) => (
+                  <div key={index} className="flex items-center bg-white shadow-md rounded-md animate-pulse"
+                       style={{minWidth: '100px'}}> {/* Adjusted for wider cards */}
+                    <div className="cursor-pointer flex-grow p-2 border-r border-gray-200 rounded-l-md">
+                      <div className="h-6 bg-gray-300 rounded w-3/4"></div>
+                      <p>Loading....</p>
+                    </div>
+                    <span className="text-white bg-red-500 rounded-r-md px-2 py-2 flex items-center justify-center">
+                <div className="h-6 bg-red-400 rounded w-full"></div>
+                      &#10005;
+            </span>
+                  </div>
+              ))}
+            </div>
 
-              </>
+        ) : (
+            <>
+              <h2 className="text-xl font-bold">Choose a Question</h2>
+              <div className="flex overflow-x-auto max-w-full gap-4"> {/* Added gap-4 class */}
+                {Array.isArray(questions) && questions.length > 0 ? (
+                    questions.map((question) => (
+                        <div key={question._id}
+                             className="flex items-center bg-white shadow-md rounded-md"> {/* Added styling for each question */}
+                          <div
+                              className="cursor-pointer flex-grow p-2 border-r border-gray-200 rounded-l-md"
+                              onClick={() => handleQuestionSelect(question)}
+                          >
+                          {question.title}
+                          </div>
+                          <span
+                              className="cursor-pointer text-white bg-red-500 hover:bg-red-700 rounded-r-md px-2 py-2 flex items-center justify-center"
+                              onClick={() => handleDeleteQuestion(question)}
+                              title="Delete Question"
+                          >
+                    &#10005;
+                </span>
+                        </div>
+                    ))
+                ) : (
+                    <div>No questions available</div>
+                )}
+              </div>
+
+            </>
+        )}
+
+        <div className="my-8"></div>
+
+        <div
+            className={`grid gap-8 border-2 border-black rounded-lg p-4 bg-gray-100 ${selectedQuestion ? 'grid-cols-2' : 'grid-cols-1'}`}>
+          {selectedQuestion && (
+              <div className="md:w-full">
+
+                <div key={selectedQuestion._id} className="mb-4">
+                  <h2 className="text-2xl font-bold mb-2">{selectedQuestion.title}</h2>
+                  <p className="text-lg text-gray-800 mb-4">{selectedQuestion.description}</p>
+                  <h3 className="text-xl font-semibold mb-2">Constraints:</h3>
+                  <p className="text-lg text-gray-800">{selectedQuestion.constraints}</p>
+                  <h3 className="text-xl font-semibold mb-2">Examples: </h3>
+                  <p className="text-lg text-gray-800">{selectedQuestion.examples}</p>
+                </div>
+              </div>
           )}
 
-          <div className="my-8"></div>
+          <div className="md:w-full">
+            <CodeEditorWindow
+                code={code}
+                onChange={(value) => {
+                  setCode(value);
+                }}
+                language={language.value}
+                theme={theme}
+            />
+          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 border-2 border-black rounded-lg p-4 bg-gray-100">
-            {selectedQuestion ? (
-                <div>
-                  <div className="text-gray-800 font-normal text-sm">
-                    <div key={selectedQuestion._id} className="mb-4">
-                      <h2 className="text-2xl font-bold mb-2">{selectedQuestion.title}</h2>
-                      <p className="text-lg text-gray-800 mb-4">{selectedQuestion.description}</p>
-                      <h3 className="text-xl font-semibold mb-2">Constraints:</h3>
-                      <p className="text-lg text-gray-800">{selectedQuestion.constraints}</p>
-                      <h3 className="text-xl font-semibold mb-2">Examples: </h3>
-                      <p className="text-lg text-gray-800">{selectedQuestion.examples}</p>
-                    </div>
-                  </div>
-                </div>
 
-            ) : (
-                <div className="flex items-center justify-center h-full">
-                  <h2 className="text-xl font-bold">Please select a question above</h2>
-                    </div>
+          <div>
+
+            <div className="flex justify-end mt-4">
+              <button
+                onClick={handleCompile}
+                disabled={!code}
+                className={classnames(
+                    "px-6 py-3 text-white rounded-md shadow-md hover:shadow-lg transition duration-200 bg-gradient-to-r from-green-500 to-green-700",
+                    !code ? "opacity-50 cursor-not-allowed" : "",
+                    processing ? "bg-green-500" : ""
                 )}
-
-                <div>
-                  <CodeEditorWindow
-                      code={code}
-                      onChange={(value) => {
-                        setCode(value);
-                      }}
-                      language={language.value}
-                      theme={theme}
-                  />
-                  <div className="flex justify-end mt-4">
-                    <button
-                        onClick={handleCompile}
-                        disabled={!code}
-                        className={classnames(
-                            "px-6 py-3 text-white rounded-md shadow-md hover:shadow-lg transition duration-200 bg-gradient-to-r from-green-500 to-green-700",
-                            !code ? "opacity-50 cursor-not-allowed" : "",
-                            processing ? "bg-green-500" : ""
-                        )}
-                    >
-                      {processing ? (
-                          <div className="flex items-center space-x-3">
-                            <FaSpinner className="w-6 h-6 animate-spin"/>
-                            <span>Compiling...</span>
-                          </div>
-                      ) : (
-                          <div className="flex items-center space-x-3 ">
-                            <MdCode className="w-6 h-6"/>
-                            <span>Compile Code</span>
-                          </div>
-                      )}
-                    </button>
+            >
+              {processing ? (
+                  <div className="flex items-center space-x-3">
+                    <FaSpinner className="w-6 h-6 animate-spin"/>
+                    <span>Compiling...</span>
                   </div>
-                </div>
-              </div>
-
+              ) : (
+                  <div className="flex items-center space-x-3 ">
+                    <MdCode className="w-6 h-6"/>
+                    <span>Compile Code</span>
+                  </div>
+              )}
+            </button>
+          </div>
         </div>
-        {selectedQuestion && (
-            <div className="container mx-auto px-4 mt-8">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div>
-                  <CustomInput customInput={customInput} setCustomInput={setCustomInput} />
-                </div>
-                <div>
-                  <OutputWindow outputDetails={outputDetails} />
-                </div>
-                <div>
-                  <OutputDetails outputDetails={outputDetails} />
-                </div>
-              </div>
+      </div>
+
+      </div>
+  {
+    (selectedQuestion || !selectedQuestion) && (
+        <div className="container mx-auto px-4 mt-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+              <CustomInput customInput={customInput} setCustomInput={setCustomInput}/>
             </div>
-        )}
-     
-      </>
-  );
+            <div>
+              <OutputWindow outputDetails={outputDetails}/>
+            </div>
+            <div>
+              <OutputDetails outputDetails={outputDetails}/>
+            </div>
+          </div>
+        </div>
+    )
+  }
+
+</>
+)
+  ;
 
 };
 
