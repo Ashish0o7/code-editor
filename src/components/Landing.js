@@ -233,7 +233,7 @@ const Landing = () => {
       stdin: btoa(customInput),
     };
 
-    axios.post('/compile', formData)
+    axios.post('https://featured-code-server.onrender.com/compile', formData)
         .then(response => {
           // Handle success
           const token = response.data.token;
