@@ -379,7 +379,7 @@ const Landing = () => {
           pauseOnHover
       />
       <Header/>
-      <div className="my-8"></div>
+      <div className="my-12"></div>
       <div className="container mx-auto px-4 mt-8">
         <div className="flex justify-between items-center mb-4">
           <div className="flex items-center space-x-4">
@@ -425,6 +425,7 @@ const Landing = () => {
             </span>
                   </div>
               ))}
+              <ClipLoader color={"#000000"} loading={true} size={50}/>
             </div>
 
         ) : (
@@ -461,7 +462,7 @@ const Landing = () => {
         <div className="my-8"></div>
 
         <div
-            className={`grid gap-8 border-2 border-black rounded-lg p-4 bg-gray-100 ${selectedQuestion ? 'grid-cols-2' : 'grid-cols-1'}`}>
+            className={`grid gap-8 my-8 border-2 border-gray-200 rounded-lg p-4 bg-white ${selectedQuestion ? 'grid-cols-2' : 'grid-cols-1'}`}>
           {selectedQuestion && (
               <div className="md:w-full">
 
@@ -492,36 +493,36 @@ const Landing = () => {
 
             <div className="flex justify-end mt-4">
               <button
-                onClick={handleCompile}
-                disabled={!code}
-                className={classnames(
-                    "px-6 py-3 text-white rounded-md shadow-md hover:shadow-lg transition duration-200 bg-gradient-to-r from-green-500 to-green-700",
-                    !code ? "opacity-50 cursor-not-allowed" : "",
-                    processing ? "bg-green-500" : ""
+                  onClick={handleCompile}
+                  disabled={!code}
+                  className={classnames(
+                      "px-6 py-3 text-white rounded-md shadow-md hover:shadow-lg transition duration-200 bg-gradient-to-r from-green-500 to-green-700",
+                      !code ? "opacity-50 cursor-not-allowed" : "",
+                      processing ? "bg-green-500" : ""
+                  )}
+              >
+                {processing ? (
+                    <div className="flex items-center space-x-3">
+                      <FaSpinner className="w-6 h-6 animate-spin"/>
+                      <span>Compiling...</span>
+                    </div>
+                ) : (
+                    <div className="flex items-center space-x-3 ">
+                      <MdCode className="w-6 h-6"/>
+                      <span>Compile Code</span>
+                    </div>
                 )}
-            >
-              {processing ? (
-                  <div className="flex items-center space-x-3">
-                    <FaSpinner className="w-6 h-6 animate-spin"/>
-                    <span>Compiling...</span>
-                  </div>
-              ) : (
-                  <div className="flex items-center space-x-3 ">
-                    <MdCode className="w-6 h-6"/>
-                    <span>Compile Code</span>
-                  </div>
-              )}
-            </button>
+              </button>
+            </div>
           </div>
         </div>
-      </div>
 
       </div>
-  {
-    (selectedQuestion || !selectedQuestion) && (
+
+
         <div className="container mx-auto px-4 mt-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div>
+          <div>
               <CustomInput customInput={customInput} setCustomInput={setCustomInput}/>
             </div>
             <div>
@@ -532,12 +533,10 @@ const Landing = () => {
             </div>
           </div>
         </div>
-    )
-  }
+
 
 </>
-)
-  ;
+) ;
 
 };
 
